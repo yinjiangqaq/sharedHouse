@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import Login from '../application/Login';
 import Register from '../application/Register';
+import Project from '../application/project'
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
@@ -12,5 +13,9 @@ export default [
   {
     path: '/register',
     component: Register,
+  },
+  {
+    path: '/project',
+    component: Project,
   },
 ];
