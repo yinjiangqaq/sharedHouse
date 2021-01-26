@@ -9,14 +9,16 @@ const onFinish = (values) => {
 const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
-const getVerifyCode = () => {
-  console.log('获取邮箱验证码');
-};
 
 function Register(props) {
   const [form] = Form.useForm(); //拿到表单实例
   //邮箱输入正确之后，邮箱验证码按钮启用的校验逻辑
-  const [checkEmail, setCheckEmail] = useState(false);
+  const [checkEmail, setCheckEmail] = useState(false); //邮箱验证是否通过
+
+  const [showNumber, setShowNumber] = useState(false); //倒计时按钮的显示
+
+
+  let [count, setCount] = useState(60);//倒计时
 
   //使用的时候，放在form 表单的 onValuesChange字段里面,但是推荐还是使用validator这个主流的方法
   const valuesChange = (changeValues, allValues) => {
@@ -28,6 +30,43 @@ function Register(props) {
     }
   };
 
+  const countDown = () => {
+   // console.log(count)
+    if (count === 1) {
+      setCount(60);
+      setShowNumber(false); //倒计时按钮不显示显示,前面的setTimeout执行结束，就没了，所以定时器就结束了，如果是setInterval实现记得清除定时器
+    } else {
+      setCount(count--);//更新count，单纯count--只是在这里会更新，但是外面没有拿到更新的值
+      setTimeout(() => countDown(), 1000);
+    }
+  };
+  const getVerifyCode = () => {
+    console.log('获取邮箱验证码');
+    setShowNumber(true); //倒计时按钮显示
+    countDown();
+  };
+
+  //动态渲染倒计时按钮
+  const renderButton = () => {
+    if (!showNumber) {
+      return (
+        <Button
+          type="default"
+          disabled={!checkEmail}
+          className="verifyCodeButton"
+          onClick={getVerifyCode}
+        >
+          获取邮箱验证码
+        </Button>
+      );
+    } else {
+      return (
+        <Button className="verifyCodeButton" type="default">
+          {count}秒后重新获取
+        </Button>
+      );
+    }
+  };
   return (
     <RegisterWrap style={{ backgroundImage: `url(${Image})` }}>
       <div className="RegisterContainer">
@@ -65,6 +104,7 @@ function Register(props) {
           >
             <Input placeholder="请输入邮箱" size="large" />
           </Form.Item>
+
           <Form.Item
             name="verifycode"
             rules={[
@@ -77,17 +117,11 @@ function Register(props) {
             <Row>
               <Col style={{ width: `100%` }}>
                 <Input placeholder="请输入邮箱验证码" size="large" />
-                <Button
-                  type="default"
-                  disabled={!checkEmail}
-                  className="verifyCodeButton"
-                  onClick={getVerifyCode}
-                >
-                  获取邮箱验证码
-                </Button>
+                {renderButton()}
               </Col>
             </Row>
           </Form.Item>
+
           <Form.Item
             name="password"
             rules={[
