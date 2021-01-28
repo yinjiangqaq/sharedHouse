@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import style from '../../assets/global-style';
+import { Menu, Dropdown } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 
 const Header = styled.div`
   width: 100%;
@@ -28,7 +30,18 @@ const Header = styled.div`
   .products {
     line-height: 38px;
   }
+  .dropDown button {
+    border: none;
+  }
 `;
+const menu = (
+  <Menu>
+    <Menu.Item key="0">
+      <a href="http://www.alipay.com/">退出登录</a>
+    </Menu.Item>
+    <Menu.Divider />
+  </Menu>
+);
 
 function BaseHeader() {
   return (
@@ -38,9 +51,17 @@ function BaseHeader() {
         <div className="products">共享公寓管理后台</div>
       </div>
 
-      <div className="right-menu"></div>
+      <div className="right-menu">
+        <Dropdown.Button
+          trigger={['click']}
+          className="dropDown"
+          overlay={menu}
+          placement="bottomCenter"
+          icon={<UserOutlined />}
+        ></Dropdown.Button>
+      </div>
     </Header>
   );
 }
 
-export default React.memo(BaseHeader)
+export default React.memo(BaseHeader);
