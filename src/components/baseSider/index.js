@@ -13,11 +13,19 @@ export const Container = styled.div`
 `;
 
 function BaseSider(props) {
-  const { menu } = props;
+  const { menu, currKeys } = props;
+  //console.log(currKeys);
+  //当前展开的keys数组
+  const currOpenKeys = [currKeys[0].split('-')[0]];
   return (
     <Container>
       <Sider width={210} className="site-layout-background">
-        <Menu mode="inline" style={{ height: '100%' }}>
+        <Menu
+          mode="inline"
+          style={{ height: '100%' }}
+          selectedKeys={currKeys}
+          defaultOpenKeys={currOpenKeys}
+        >
           {menu.map((menuItem, index) => {
             return (
               <SubMenu title={menuItem.name} key={`${index}`}>

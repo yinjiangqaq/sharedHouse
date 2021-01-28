@@ -20,17 +20,18 @@ export default [
   {
     path: '/project',
     component: Project,
+    //render: () => <Redirect to={'/project/account'}></Redirect>,
     children: [
       {
         name: '账号管理',
         path: '/project/account',
-        label:['用户管理','账户管理'],
+        label: ['用户管理', '账户管理'],
         component: Account,
       },
       {
         name: '信用管理',
         path: '/project/credit',
-        label:['用户管理','信用管理'],
+        label: ['用户管理', '信用管理'],
         component: Credit,
       },
     ],

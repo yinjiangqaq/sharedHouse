@@ -9,14 +9,21 @@ function Project(props) {
   const { route } = props;
   //拿到每个路由的具体的面包屑路径
   const getModelName = () => {
-    return route.children.find(
-      (item) => item.path === window.location.hash.slice(1)
-    ).label;
+    if (window.location.hash.slice(1) === '/project') {
+      //默认跳账号管理
+      window.location.hash = '#/project/account';
+      return [];
+    } else {
+      return route.children.find(
+        (item) => item.path === window.location.hash.slice(1)
+      ).label;
+    }
   };
+
   const MENU = [
     {
       id: 0,
-      name: '用户管理',
+      name: '客户管理',
       children: [
         {
           id: 1,
@@ -47,11 +54,28 @@ function Project(props) {
       ],
     },
   ];
+  //根据当前路径显示相对应的菜单项
+
+  const GetCurrKeys = () => {
+    if (window.location.hash.slice(1) === '/project') return ['0-0'];
+    else {
+      const target = window.location.hash.slice(1).split('/');
+      let res = [];
+      MENU.map((item, index) => {
+        item.children.map((subItem, subIndex) => {
+          if (target.includes(subItem.label)) {
+            res.push(`${index}-${subIndex}`);
+          }
+        });
+      });
+      return res;
+    }
+  };
   return (
     <Layout style={{ height: '100%' }}>
       <BaseHeader></BaseHeader>
       <Layout>
-        <BaseSider menu={MENU}></BaseSider>
+        <BaseSider menu={MENU} currKeys={GetCurrKeys()}></BaseSider>
         <Content
           style={{
             margin: '20px',
@@ -61,8 +85,8 @@ function Project(props) {
         >
           <BreadcrumbContainer>
             <Breadcrumb>
-              {getModelName().map((item) => {
-                return <Breadcrumb.Item>{item}</Breadcrumb.Item>;
+              {getModelName().map((item, index) => {
+                return <Breadcrumb.Item key={index}>{item}</Breadcrumb.Item>;
               })}
             </Breadcrumb>
           </BreadcrumbContainer>
