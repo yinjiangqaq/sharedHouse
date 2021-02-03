@@ -6,6 +6,8 @@ import Register from '../application/Register';
 import Project from '../application/project';
 import Account from '../application/Account';
 import Credit from '../application/Credit';
+import Room from '../application/Room';
+import NotFound from '../application/NotFound'
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
@@ -34,6 +36,17 @@ export default [
         label: ['用户管理', '信用管理'],
         component: Credit,
       },
+      {
+        name: '公寓租赁管理',
+        path: '/project/room',
+        label: ['租赁管理', '公寓租赁管理'],
+        component: Room,
+      },
     ],
+  },
+  {
+    name: 'Not-Found',
+    path: '*',
+    component: NotFound,
   },
 ];

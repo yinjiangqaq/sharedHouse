@@ -14,16 +14,24 @@ function Project(props) {
       window.location.hash = '#/project/account';
       return [];
     } else {
-      return route.children.find(
-        (item) => item.path === window.location.hash.slice(1)
-      ).label;
+      if (
+        !route.children.find(
+          (item) => item.path === window.location.hash.slice(1)
+        )
+      ) {
+        window.location.assign('/');
+      } else {
+        return route.children.find(
+          (item) => item.path === window.location.hash.slice(1)
+        ).label;
+      }
     }
   };
 
   const MENU = [
     {
       id: 0,
-      name: '客户管理',
+      name: '用户管理',
       children: [
         {
           id: 1,
@@ -43,13 +51,18 @@ function Project(props) {
       children: [
         {
           id: 4,
-          name: '房屋租赁管理',
+          name: '公寓租赁管理',
           label: 'room',
         },
         {
           id: 5,
           name: '公共资源租赁管理',
           label: 'common',
+        },
+        {
+          id: 6,
+          name: '历史数据统计',
+          label: 'history',
         },
       ],
     },

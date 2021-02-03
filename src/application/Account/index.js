@@ -1,8 +1,19 @@
 import React from 'react';
 import { MainContainer } from './style';
 import moment from 'moment';
-import { Form, Input, Button, Row, Col, DatePicker, Table, Space } from 'antd';
+import {
+  Form,
+  Input,
+  Button,
+  Row,
+  Col,
+  Select,
+  DatePicker,
+  Table,
+  Space,
+} from 'antd';
 const { RangePicker } = DatePicker;
+const { Option } = Select;
 const onFinish = (values) => {
   console.log('Success:', values);
 };
@@ -61,6 +72,21 @@ function Account() {
       address: 'Sidney No. 1 Lake Park',
     },
   ];
+
+  const STATE = [
+    {
+      label: '未完成',
+      value: 0,
+    },
+    {
+      label: '通过',
+      value: 1,
+    },
+    {
+      label: '驳回',
+      value: 2,
+    },
+  ];
   const [form] = Form.useForm();
   const dateFormat = 'YYYY/MM/DD'; //日期格式
   return (
@@ -84,8 +110,16 @@ function Account() {
             </Form.Item>
           </Col>
           <Col span={6} offset={1}>
-            <Form.Item label="邮箱" name="email">
-              <Input placeholder="请输入用户邮箱"></Input>
+            <Form.Item label="状态" name="state">
+              <Select placeholder="请选择订单的状态">
+                {STATE.map((item, index) => {
+                  return (
+                    <Option key={index} value={item.value}>
+                      {item.label}
+                    </Option>
+                  );
+                })}
+              </Select>
             </Form.Item>
           </Col>
           <Col offset={1} span={3}>
