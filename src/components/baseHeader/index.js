@@ -34,16 +34,21 @@ const Header = styled.div`
     border: none;
   }
 `;
-const menu = (
-  <Menu>
-    <Menu.Item key="0">
-      <a href="http://www.alipay.com/">退出登录</a>
-    </Menu.Item>
-    <Menu.Divider />
-  </Menu>
-);
 
 function BaseHeader() {
+  const handleLogOut = () => {
+    //退出登录的方法，后台返回成功之后，前端清理菜单缓存，重定向到登录界面
+
+    window.location.href = window.location.origin + '/#/login';
+  };
+  const menu = (
+    <Menu>
+      <Menu.Item key="0">
+        <a onClick={handleLogOut}>退出登录</a>
+      </Menu.Item>
+      <Menu.Divider />
+    </Menu>
+  );
   return (
     <Header>
       <div className="left-menu">

@@ -21,8 +21,7 @@ const onFinish = (values) => {
 const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
-function Room() {
-  //负责当前需要处理的订单，所以没有订单状态的选择下拉框
+function History() {
   let now = moment();
   const columns = [
     {
@@ -47,8 +46,8 @@ function Room() {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <a>通过</a>
-          <a>驳回</a>
+          <a>Invite {record.name}</a>
+          <a>Delete</a>
         </Space>
       ),
     },
@@ -75,6 +74,20 @@ function Room() {
     },
   ];
 
+  const STATE = [
+    {
+      label: '未完成',
+      value: 0,
+    },
+    {
+      label: '通过',
+      value: 1,
+    },
+    {
+      label: '驳回',
+      value: 2,
+    },
+  ];
   const [form] = Form.useForm();
   const dateFormat = 'YYYY/MM/DD'; //日期格式
   return (
@@ -103,7 +116,19 @@ function Room() {
               <Input placeholder="请输入用户名或者用户id"></Input>
             </Form.Item>
           </Col>
-      
+          <Col span={6} offset={1}>
+            <Form.Item label="状态" name="state">
+              <Select placeholder="请选择订单的状态">
+                {STATE.map((item, index) => {
+                  return (
+                    <Option key={index} value={item.value}>
+                      {item.label}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
           <Col offset={1} span={3}>
             <Form.Item>
               <Button type="primary" htmlType="submit">
@@ -123,4 +148,4 @@ function Room() {
   );
 }
 
-export default React.memo(Room);
+export default React.memo(History);

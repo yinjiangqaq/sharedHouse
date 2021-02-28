@@ -1,17 +1,19 @@
 import { Form, Input, Button } from 'antd';
 import React from 'react';
 import { LoginWrap } from './style';
-import { NavLink } from 'react-router-dom';
-
-const onFinish = (values) => {
-  console.log('Success:', values);
-};
-
-const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
+import { NavLink, useHistory } from 'react-router-dom';
 
 function Login(props) {
+  //react hook 路由跳转的方式， navlink和history.push
+  let history = useHistory();
+  const onFinish = (values) => {
+    console.log('Success:', values);
+    history.push('project');
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
   return (
     <LoginWrap>
       <div className="LoginContainer">

@@ -7,8 +7,9 @@ import Project from '../application/project';
 import Account from '../application/Account';
 import Credit from '../application/Credit';
 import Room from '../application/Room';
-import NotFound from '../application/NotFound'
-
+import NotFound from '../application/NotFound';
+import History from '../application/History';
+import Device from '../application/Device';
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
   {
@@ -41,6 +42,18 @@ export default [
         path: '/project/room',
         label: ['租赁管理', '公寓租赁管理'],
         component: Room,
+      },
+      {
+        name: '公共设施租赁管理',
+        path: '/project/common',
+        label: ['租赁管理', '公共设施管理'],
+        component: Device,
+      },
+      {
+        name: '历史数据统计',
+        path: '/project/history',
+        label: ['租赁管理', '历史数据统计'],
+        component: History,
       },
     ],
   },

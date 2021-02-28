@@ -21,7 +21,7 @@ const onFinish = (values) => {
 const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
-function Room() {
+function Device() {
   //负责当前需要处理的订单，所以没有订单状态的选择下拉框
   let now = moment();
   const columns = [
@@ -123,4 +123,4 @@ function Room() {
   );
 }
 
-export default React.memo(Room);
+export default React.memo(Device);
