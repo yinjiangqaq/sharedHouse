@@ -10,6 +10,7 @@ import Room from '../application/Room';
 import NotFound from '../application/NotFound';
 import History from '../application/History';
 import Device from '../application/Device';
+import Equipment from '../application/Equipment';
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
   {
@@ -28,7 +29,7 @@ export default [
       {
         name: '账号管理',
         path: '/project/account',
-        label: ['用户管理', '账户管理'],
+        label: ['用户管理', '账号管理'],
         component: Account,
       },
       {
@@ -55,8 +56,15 @@ export default [
         label: ['租赁管理', '历史数据统计'],
         component: History,
       },
+      {
+        name: '公寓配置管理',
+        path: '/project/equipment',
+        label: ['公寓配置管理'],
+        component: Equipment,
+      },
     ],
   },
+
   {
     name: 'Not-Found',
     path: '*',

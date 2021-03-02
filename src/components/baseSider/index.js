@@ -27,36 +27,49 @@ function BaseSider(props) {
           defaultOpenKeys={currOpenKeys}
         >
           {menu.map((menuItem, index) => {
-            return (
-              <SubMenu title={menuItem.name} key={`${index}`}>
-                {menuItem.children.map((submenu, subIndex) => {
-                  if (submenu.children && submenu.children.length) {
-                    submenu.children.map((ssubmenu, ssubIndex) => {
+            if (menuItem.children && menuItem.children.length) {
+              return (
+                <SubMenu title={menuItem.name} key={`${index}`}>
+                  {menuItem.children.map((submenu, subIndex) => {
+                    if (submenu.children && submenu.children.length) {
+                      submenu.children.map((ssubmenu, ssubIndex) => {
+                        return (
+                          <SubMenu
+                            title={submenu.name}
+                            key={`${index}-${subIndex}`}
+                          >
+                            <Menu.Item
+                              key={`${index}-${subIndex}-${ssubIndex}`}
+                            >
+                              <NavLink to={`/project/${ssubmenu.label}`}>
+                                {ssubmenu.name}
+                              </NavLink>
+                            </Menu.Item>
+                          </SubMenu>
+                        );
+                      });
+                    } else {
                       return (
-                        <SubMenu
-                          title={submenu.name}
-                          key={`${index}-${subIndex}`}
-                        >
-                          <Menu.Item key={`${index}-${subIndex}-${ssubIndex}`}>
-                            <NavLink to={`/project/${ssubmenu.label}`}>
-                              {ssubmenu.name}
-                            </NavLink>
-                          </Menu.Item>
-                        </SubMenu>
+                        <Menu.Item key={`${index}-${subIndex}`}>
+                          <NavLink to={`/project/${submenu.label}`}>
+                            {submenu.name}
+                          </NavLink>
+                        </Menu.Item>
                       );
-                    });
-                  } else {
-                    return (
-                      <Menu.Item key={`${index}-${subIndex}`}>
-                        <NavLink to={`/project/${submenu.label}`}>
-                          {submenu.name}
-                        </NavLink>
-                      </Menu.Item>
-                    );
-                  }
-                })}
-              </SubMenu>
-            );
+                    }
+                  })}
+                </SubMenu>
+              );
+            } else {
+              //单独的菜单项，没有子项的
+              return (
+                <Menu.Item key={`${index}`}>
+                  <NavLink to={`/project/${menuItem.label}`}>
+                    {menuItem.name}
+                  </NavLink>
+                </Menu.Item>
+              );
+            }
           })}
         </Menu>
       </Sider>

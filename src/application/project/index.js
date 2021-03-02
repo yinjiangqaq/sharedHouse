@@ -66,6 +66,12 @@ function Project(props) {
         },
       ],
     },
+    {
+      id: 7,
+      name: '公寓配置管理',
+      label: 'equipment',
+      children: [],
+    },
   ];
   //根据当前路径显示相对应的菜单项
 
@@ -75,11 +81,17 @@ function Project(props) {
       const target = window.location.hash.slice(1).split('/');
       let res = [];
       MENU.map((item, index) => {
-        item.children.map((subItem, subIndex) => {
-          if (target.includes(subItem.label)) {
-            res.push(`${index}-${subIndex}`);
+        if (item.children && item.children.length) {
+          item.children.map((subItem, subIndex) => {
+            if (target.includes(subItem.label)) {
+              res.push(`${index}-${subIndex}`);
+            }
+          });
+        } else {
+          if (target.includes(item.label)) {
+            res.push(`${index}`);
           }
-        });
+        }
       });
       return res;
     }
