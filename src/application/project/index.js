@@ -7,6 +7,7 @@ import { BreadcrumbContainer } from './style';
 const { Content } = Layout;
 function Project(props) {
   const { route } = props;
+  //console.log(route.children)
   //拿到每个路由的具体的面包屑路径
   const getModelName = () => {
     if (window.location.hash.slice(1) === '/project') {
@@ -88,6 +89,7 @@ function Project(props) {
             }
           });
         } else {
+          //没有children 的单级菜单项
           if (target.includes(item.label)) {
             res.push(`${index}`);
           }
@@ -115,6 +117,7 @@ function Project(props) {
               })}
             </Breadcrumb>
           </BreadcrumbContainer>
+          {/* 渲染与当前路径匹配的路由组件 */}
           {renderRoutes(route.children)}
         </Content>
       </Layout>

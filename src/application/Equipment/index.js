@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MainContainer } from './style';
 import moment, { months } from 'moment';
+import EquipmentForm from '../../components/equipmentForm';
 import {
   Form,
   Input,
   Button,
+  Modal,
   Row,
   Col,
   Select,
@@ -12,43 +14,53 @@ import {
   Table,
   Space,
 } from 'antd';
+import { changeConfirmLocale } from 'antd/lib/modal/locale';
 const { RangePicker } = DatePicker;
 const { Option } = Select;
-const onFinish = (values) => {
-  console.log('Success:', values);
-};
 
-const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
 function Equipment() {
   //负责当前需要处理的订单，所以没有订单状态的选择下拉框
   let now = moment();
   const columns = [
     {
-      title: 'Name',
+      title: '公寓名称',
       dataIndex: 'name',
       key: 'name',
-      render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: '价格',
+      dataIndex: 'price',
+      key: 'price',
     },
     {
-      title: 'Address',
+      title: '房东',
+      dataIndex: 'owner',
+      key: 'owner',
+    },
+    {
+      title: '联系方式',
+      dataIndex: 'contact',
+      key: 'contact',
+    },
+    {
+      title: '公寓地址',
       dataIndex: 'address',
       key: 'address',
+      ellipsis: true,
     },
-
+    {
+      title: '公寓描述',
+      dataIndex: 'description',
+      key: 'description',
+      ellipsis: true,
+    },
     {
       title: 'Action',
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <a>通过</a>
-          <a>驳回</a>
+          <a onClick={() => showDetailModal(record)}>详情</a>
+          <a onClick={() => showChangeModal(record)}>更改</a>
         </Space>
       ),
     },
@@ -56,10 +68,13 @@ function Equipment() {
 
   const data = [
     {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
+      name: '平安里',
+      price: '123',
+      owner: 'Jack',
+      contact: '121212121',
+      address: 'London No. 1 Lake Park',
+      description:
+        '一个主卧，两个副卧，有电视，空调，洗衣机，吹风机，还有厨房，浴室，还有阳台',
     },
     {
       key: '2',
@@ -77,6 +92,43 @@ function Equipment() {
 
   const [form] = Form.useForm();
   const dateFormat = 'YYYY/MM/DD'; //日期格式
+  const onFinish = (values) => {
+    console.log('Success:', values);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+
+  //对话框的显示  0 新增，1更改，2详情
+  const [isModalVisible, setIsModalVisible] = useState(0);
+
+  const [formData, setFormData] = useState(null);
+  const showModal = () => {
+    setFormData(null); //重新置为空
+    setIsModalVisible(1);
+  };
+  //新增公寓配置
+  const handleOk = () => {
+    console.log(isModalVisible); //判单当前的状态
+
+    setIsModalVisible(0);
+  };
+  //取消
+  const handleCancel = () => {
+    setIsModalVisible(0);
+  };
+  const showChangeModal = (record) => {
+    //console.log(record);
+    setFormData(record);
+    // setIsChangeModalVisible(true);
+    setIsModalVisible(2);
+  };
+
+  const showDetailModal = (record) => {
+    setFormData(record);
+    setIsModalVisible(3);
+  };
   return (
     <MainContainer>
       <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}>
@@ -86,7 +138,7 @@ function Equipment() {
               <RangePicker
                 defaultValue={[
                   moment(
-                    `${now.year()}/${now.month()}/${now.date() - 1 }`,
+                    `${now.year()}/${now.month()}/${now.date() - 1}`,
                     dateFormat
                   ),
                   moment(
@@ -103,22 +155,48 @@ function Equipment() {
               <Input placeholder="请输入用户名或者用户id"></Input>
             </Form.Item>
           </Col>
-      
-          <Col offset={1} span={3}>
+
+          <Col offset={1} span={2}>
             <Form.Item>
               <Button type="primary" htmlType="submit">
                 查询
               </Button>
             </Form.Item>
           </Col>
-          {/* <Col span={6} >
-            <Form.Item label="邮箱" name="email">
-              <Input placeholder="请输入用户邮箱"></Input>
+          {/* 新增公寓配置 */}
+          <Col span={1}>
+            <Form.Item>
+              <Button type="default" onClick={showModal}>
+                新增
+              </Button>
             </Form.Item>
-          </Col> */}
+          </Col>
         </Row>
       </Form>
       <Table columns={columns} dataSource={data} />
+      <Modal
+        title="公寓配置"
+        visible={isModalVisible > 0}
+        // onOk={handleOk}
+        onCancel={handleCancel}
+        footer={
+          isModalVisible === 3
+            ? null
+            : [
+                <Button key="back" onClick={handleCancel}>
+                  取消
+                </Button>,
+                <Button type="primary" onClick={handleOk}>
+                  {isModalVisible === 1 ? '新增' : '更改'}
+                </Button>,
+              ]
+        }
+      >
+        <EquipmentForm
+          formData={formData}
+          modalState={isModalVisible}
+        ></EquipmentForm>
+      </Modal>
     </MainContainer>
   );
 }
