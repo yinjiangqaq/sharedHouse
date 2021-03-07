@@ -111,7 +111,7 @@ function Equipment() {
   //新增公寓配置
   const handleOk = () => {
     console.log(isModalVisible); //判单当前的状态
-
+    console.log('父组件的formData', formData);
     setIsModalVisible(0);
   };
   //取消
@@ -195,6 +195,7 @@ function Equipment() {
         <EquipmentForm
           formData={formData}
           modalState={isModalVisible}
+          toParent={setFormData}
         ></EquipmentForm>
       </Modal>
     </MainContainer>

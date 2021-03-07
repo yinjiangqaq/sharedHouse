@@ -6,21 +6,27 @@ export const Container = styled.div`
 `;
 
 function EquipmentForm(props) {
-  let { formData, modalState } = props;
-  console.log(formData);
+  let { formData, modalState, toParent } = props;
+  //toparent拿到父组件的setFormData,从而可以子组件更新数据给父组件
+  //console.log(formData);
   const [form] = Form.useForm();
-  console.log(form);
+  // console.log(form);
   if (formData !== null) {
-    console.log(11111);
     form.setFieldsValue(formData);
   } else {
     form.resetFields();
   }
+
+  const formDataChange = (changedValues, allValues) => {
+    console.log(allValues);
+    toParent(allValues);
+  };
   return (
     <Form
       form={form}
       layout="vertical"
       hideRequiredMark
+      onValuesChange={formDataChange}
       //   initialValues={formData}
     >
       <Row gutter={16}>
