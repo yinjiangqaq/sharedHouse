@@ -133,6 +133,7 @@ function Equipment() {
     <MainContainer>
       <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}>
         <Row gutter={24}>
+          {/* 不需要时间表单
           <Col span={6}>
             <Form.Item label="日期" name="time">
               <RangePicker
@@ -149,10 +150,15 @@ function Equipment() {
                 format={dateFormat}
               />
             </Form.Item>
+          </Col> */}
+          <Col span={6}>
+            <Form.Item label="公寓名称" name="name">
+              <Input placeholder="请输入公寓名称"></Input>
+            </Form.Item>
           </Col>
           <Col span={6} offset={1}>
-            <Form.Item label="用户ID" name="userId">
-              <Input placeholder="请输入用户名或者用户id"></Input>
+            <Form.Item label="房东姓名" name="name">
+              <Input placeholder="请输入房东姓名"></Input>
             </Form.Item>
           </Col>
 

@@ -25,29 +25,33 @@ function History() {
   let now = moment();
   const columns = [
     {
-      title: 'Name',
+      title: '订单ID',
+      dataIndex: 'caseId',
+      key: 'caseId',
+    },
+    {
+      title: '公寓名称',
       dataIndex: 'name',
       key: 'name',
-      render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: '顾客名称',
+      dataIndex: 'customer',
+      key: 'customer',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: '订单时间',
+      dataIndex: 'time',
+      key: 'time',
     },
 
     {
-      title: 'Action',
+      title: '订单操作',
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <a>Invite {record.name}</a>
-          <a>Delete</a>
+          <a>详情</a>
+          <a>扣除信用分</a>
         </Space>
       ),
     },
@@ -99,7 +103,7 @@ function History() {
               <RangePicker
                 defaultValue={[
                   moment(
-                    `${now.year()}/${now.month()}/${now.date() - 1 }`,
+                    `${now.year()}/${now.month()}/${now.date() - 1}`,
                     dateFormat
                   ),
                   moment(
@@ -112,8 +116,8 @@ function History() {
             </Form.Item>
           </Col>
           <Col span={6} offset={1}>
-            <Form.Item label="用户ID" name="userId">
-              <Input placeholder="请输入用户名或者用户id"></Input>
+            <Form.Item label="订单ID" name="caseId">
+              <Input placeholder="请输入订单id"></Input>
             </Form.Item>
           </Col>
           <Col span={6} offset={1}>
