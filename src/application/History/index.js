@@ -30,9 +30,9 @@ function History() {
       key: 'caseId',
     },
     {
-      title: '公寓名称',
-      dataIndex: 'name',
-      key: 'name',
+      title: '订单名称',
+      dataIndex: 'caseName',
+      key: 'caseName',
     },
     {
       title: '顾客名称',
@@ -58,6 +58,7 @@ function History() {
   ];
 
   const data = [
+    //到时候数据需要做一层转换
     {
       key: '1',
       name: 'John Brown',

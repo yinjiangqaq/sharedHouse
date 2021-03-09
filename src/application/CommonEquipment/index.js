@@ -18,14 +18,14 @@ import { changeConfirmLocale } from 'antd/lib/modal/locale';
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
-function Equipment() {
+function CommonEquipment() {
   //负责当前需要处理的订单，所以没有订单状态的选择下拉框
   let now = moment();
   const columns = [
     {
-      title: '公寓名称',
-      dataIndex: 'name',
-      key: 'name',
+      title: '公共设施名称',
+      dataIndex: 'device',
+      key: 'device',
     },
     {
       title: '价格',
@@ -33,7 +33,7 @@ function Equipment() {
       key: 'price',
     },
     {
-      title: '房东',
+      title: '联系人',
       dataIndex: 'owner',
       key: 'owner',
     },
@@ -43,13 +43,13 @@ function Equipment() {
       key: 'contact',
     },
     {
-      title: '公寓地址',
+      title: '公共设施地址',
       dataIndex: 'address',
       key: 'address',
       ellipsis: true,
     },
     {
-      title: '公寓描述',
+      title: '公共设施描述',
       dataIndex: 'description',
       key: 'description',
       ellipsis: true,
@@ -134,12 +134,12 @@ function Equipment() {
       <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}>
         <Row gutter={24}>
           <Col span={6}>
-            <Form.Item label="公寓名称" name="name">
-              <Input placeholder="请输入公寓名称"></Input>
+            <Form.Item label="公共设施名称" name="device">
+              <Input placeholder="公共设施名称"></Input>
             </Form.Item>
           </Col>
           <Col span={6} offset={1}>
-            <Form.Item label="房东姓名" name="owner">
+            <Form.Item label="房东姓名" name="name">
               <Input placeholder="请输入房东姓名"></Input>
             </Form.Item>
           </Col>
@@ -184,11 +184,11 @@ function Equipment() {
           formData={formData}
           modalState={isModalVisible}
           toParent={setFormData}
-          isCommon={false}
+          isCommon
         ></EquipmentForm>
       </Modal>
     </MainContainer>
   );
 }
 
-export default React.memo(Equipment);
+export default React.memo(CommonEquipment);

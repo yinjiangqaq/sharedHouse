@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Form, Input, Row, Col } from 'antd';
+import { Form, Input, Row, Col, Select } from 'antd';
+import { setType } from '../../common/constant';
 export const Container = styled.div`
   background: #fff;
 `;
+const { Option } = Select;
 
 function EquipmentForm(props) {
-  let { formData, modalState, toParent } = props;
+  let { formData, modalState, toParent, isCommon } = props;
   //toparent拿到父组件的setFormData,从而可以子组件更新数据给父组件
   //console.log(formData);
+  console.log(isCommon);
   const [form] = Form.useForm();
   // console.log(form);
   if (formData !== null) {
@@ -32,12 +35,16 @@ function EquipmentForm(props) {
       <Row gutter={16}>
         <Col span={12}>
           <Form.Item
-            name="name"
-            label="公寓名称"
-            rules={[{ required: true, message: '请输入公寓名称' }]}
+            name={isCommon ? 'device' : 'name'}
+            label={isCommon ? '公共设施名称' : '公寓名称'}
+            rules={
+              isCommon
+                ? [{ required: true, message: '请输入公共设施名称' }]
+                : [{ required: true, message: '请输入公寓名称' }]
+            }
           >
             <Input
-              placeholder="请输入公寓名称"
+              placeholder={isCommon ? '请输入公共设施名称' : '请输入公寓名称'}
               disabled={modalState === 3}
               //   defaultValue={formData.name}
             />
@@ -50,16 +57,32 @@ function EquipmentForm(props) {
             rules={[
               {
                 required: true,
-                message: '请输入公寓的价格',
+                message: '请输入价格',
               },
             ]}
           >
             <Input
               prefix="￥"
-              suffix="/每晚"
-              placeholder="请输入公寓的价格"
+              suffix={isCommon ? '' : '/每晚'}
+              style={isCommon ? { width: '50%' } : { width: '100%' }}
+              placeholder={
+                isCommon ? '请输入公共资源的价格' : '请输入公寓的价格'
+              }
               disabled={modalState === 3}
             />
+            {isCommon ? (
+              <Select
+                style={{ marginLeft: '5%', width: '40%' }}
+                defaultValue={1}
+                disabled={modalState === 3}
+              >
+                {setType.map((item, index) => {
+                  return <Option value={item.value}>{item.label}</Option>;
+                })}
+              </Select>
+            ) : (
+              ''
+            )}
           </Form.Item>
         </Col>
       </Row>
@@ -67,12 +90,16 @@ function EquipmentForm(props) {
         <Col span={12}>
           <Form.Item
             name="owner"
-            label="房东"
-            rules={[{ required: true, message: '请输入房东姓名' }]}
+            label={isCommon ? '联系人' : '房东'}
+            rules={
+              isCommon
+                ? [{ required: true, message: '请输入联系人姓名' }]
+                : [{ required: true, message: '请输入房东姓名' }]
+            }
           >
             <Input
               style={{ width: '100%' }}
-              placeholder="请输入房东姓名"
+              placeholder={isCommon ? '请输入联系人姓名' : '请输入房东姓名'}
               disabled={modalState === 3}
             />
           </Form.Item>
@@ -85,7 +112,7 @@ function EquipmentForm(props) {
           >
             <Input
               style={{ width: '100%' }}
-              placeholder="请输入房东联系方式"
+              placeholder="请输入联系方式"
               disabled={modalState === 3}
             />
           </Form.Item>
@@ -95,12 +122,12 @@ function EquipmentForm(props) {
         <Col span={24}>
           <Form.Item
             name="address"
-            label="公寓详细地址"
-            rules={[{ required: true, message: '请输入公寓的详细地址' }]}
+            label="详细地址"
+            rules={[{ required: true, message: '请输入详细地址' }]}
           >
             <Input
               style={{ width: '100%' }}
-              placeholder="请输入公寓的详细地址"
+              placeholder="请输入详细地址"
               disabled={modalState === 3}
             />
           </Form.Item>
@@ -110,17 +137,26 @@ function EquipmentForm(props) {
         <Col span={24}>
           <Form.Item
             name="description"
-            label="公寓介绍"
-            rules={[
-              {
-                required: true,
-                message: '请输入公寓的介绍',
-              },
-            ]}
+            label={isCommon ? '公共资源介绍' : '公寓介绍'}
+            rules={
+              isCommon
+                ? [
+                    {
+                      required: true,
+                      message: '请输入公共资源介绍',
+                    },
+                  ]
+                : [
+                    {
+                      required: true,
+                      message: '请输入公寓介绍',
+                    },
+                  ]
+            }
           >
             <Input.TextArea
               rows={4}
-              placeholder="请输入公寓的介绍"
+              placeholder={isCommon ? '请输入公共资源介绍' : '请输入公寓介绍'}
               disabled={modalState === 3}
             />
           </Form.Item>

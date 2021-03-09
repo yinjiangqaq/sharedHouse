@@ -11,6 +11,7 @@ import NotFound from '../application/NotFound';
 import History from '../application/History';
 import Device from '../application/Device';
 import Equipment from '../application/Equipment';
+import CommonEquipment from '../application/CommonEquipment';
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
   {
@@ -59,8 +60,14 @@ export default [
       {
         name: '公寓配置管理',
         path: '/project/equipment',
-        label: ['公寓配置管理'],
+        label: ['配置管理', '公寓配置管理'],
         component: Equipment,
+      },
+      {
+        name: '公共资源配置管理',
+        path: '/project/commonEquipment',
+        label: ['配置管理', '公共资源配置管理'],
+        component: CommonEquipment,
       },
     ],
   },

@@ -69,9 +69,19 @@ function Project(props) {
     },
     {
       id: 7,
-      name: '公寓配置管理',
-      label: 'equipment',
-      children: [],
+      name: '配置管理',
+      children: [
+        {
+          id: 8,
+          name: '公寓配置管理',
+          label: 'equipment',
+        },
+        {
+          id: 9,
+          name: '公共资源配置管理',
+          label: 'commonEquipment',
+        },
+      ],
     },
   ];
   //根据当前路径显示相对应的菜单项
