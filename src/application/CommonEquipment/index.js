@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MainContainer } from './style';
 import moment, { months } from 'moment';
 import EquipmentForm from '../../components/equipmentForm';
+import { setType, modalState } from '../../common/constant';
 import {
   Form,
   Input,
@@ -28,9 +29,17 @@ function CommonEquipment() {
       key: 'device',
     },
     {
-      title: '价格',
+      title: '价格/RMB',
       dataIndex: 'price',
       key: 'price',
+    },
+    {
+      title: '套餐形式',
+      dataIndex: 'setType',
+      key: 'setType',
+      render: (text, record) => {
+        return setType.filter((item) => item.value === record.setType)[0].label;
+      },
     },
     {
       title: '联系人',
@@ -68,30 +77,40 @@ function CommonEquipment() {
 
   const data = [
     {
-      name: '平安里',
-      price: '123',
+      device: '健身房',
+      price: '20',
+      setType: 1,
       owner: 'Jack',
       contact: '121212121',
-      address: 'London No. 1 Lake Park',
+      address: '平安里一楼西区',
       description:
-        '一个主卧，两个副卧，有电视，空调，洗衣机，吹风机，还有厨房，浴室，还有阳台',
+        '健身房配置有更衣洗浴设施，有氧，固定功能力量区、自由力量区等等',
     },
     {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
+      device: '健身房',
+      price: '2000',
+      setType: 3,
+      owner: 'Jack',
+      contact: '121212121',
+      address: '平安里一楼西区',
+      description:
+        '健身房配置有更衣洗浴设施，有氧，固定功能力量区、自由力量区等等',
     },
     {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
+      device: '健身房',
+      price: '200',
+      setType: 2,
+      owner: 'Jack',
+      contact: '12sadasdasd',
+      address: '平安里一楼西区',
+      description:
+        '健身房配置有更衣洗浴设施，有氧，固定功能力量区、自由力量区等等',
     },
   ];
 
   const [form] = Form.useForm();
   const dateFormat = 'YYYY/MM/DD'; //日期格式
+  //查询表单
   const onFinish = (values) => {
     console.log('Success:', values);
   };
@@ -100,34 +119,34 @@ function CommonEquipment() {
     console.log('Failed:', errorInfo);
   };
 
-  //对话框的显示  0 新增，1更改，2详情
-  const [isModalVisible, setIsModalVisible] = useState(0);
+  //对话框的显示 
+  const [isModalVisible, setIsModalVisible] = useState(modalState.INITIAL);
 
   const [formData, setFormData] = useState(null);
   const showModal = () => {
     setFormData(null); //重新置为空
-    setIsModalVisible(1);
+    setIsModalVisible(modalState.ADD);
   };
   //新增公寓配置
   const handleOk = () => {
     console.log(isModalVisible); //判单当前的状态
     console.log('父组件的formData', formData);
-    setIsModalVisible(0);
+    setIsModalVisible(modalState.INITIAL);
   };
   //取消
   const handleCancel = () => {
-    setIsModalVisible(0);
+    setIsModalVisible(modalState.INITIAL);
   };
   const showChangeModal = (record) => {
     //console.log(record);
     setFormData(record);
     // setIsChangeModalVisible(true);
-    setIsModalVisible(2);
+    setIsModalVisible(modalState.CHANGE);
   };
 
   const showDetailModal = (record) => {
     setFormData(record);
-    setIsModalVisible(3);
+    setIsModalVisible(modalState.DETAIL);
   };
   return (
     <MainContainer>

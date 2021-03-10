@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MainContainer } from './style';
 import moment, { months } from 'moment';
+import CaseForm from '../../components/caseForm';
+import { timestampToTime } from '../../common/util';
+import { STATE, modalState } from '../../common/constant';
 import {
   Form,
   Input,
   Button,
+  Modal,
   Row,
   Col,
   Select,
@@ -22,6 +26,18 @@ const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
 function History() {
+  const [caseFormData, setCaseFormData] = useState(null);
+  const [isCaseModalVisible, setIsCaseModalVisible] = useState(
+    modalState.INITIAL
+  );
+  const showDetailModal = (record) => {
+    setCaseFormData(record);
+    setIsCaseModalVisible(modalState.DETAIL);
+  };
+  //取消
+  const handleCancel = () => {
+    setIsCaseModalVisible(modalState.INITIAL);
+  };
   let now = moment();
   const columns = [
     {
@@ -50,7 +66,7 @@ function History() {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <a>详情</a>
+          <a onClick={() => showDetailModal(record)}>详情</a>
           <a>扣除信用分</a>
         </Space>
       ),
@@ -61,38 +77,22 @@ function History() {
     //到时候数据需要做一层转换
     {
       key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
+      caseId: 1,
+      caseName: '平安里',
+      time: timestampToTime(+new Date() / 1000),
+
+      customer: '小林',
     },
     {
       key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
+      caseId: 2,
+      caseName: '健身房',
+      time: timestampToTime(+new Date() / 1000),
+
+      customer: '小李',
     },
   ];
 
-  const STATE = [
-    {
-      label: '未完成',
-      value: 0,
-    },
-    {
-      label: '通过',
-      value: 1,
-    },
-    {
-      label: '驳回',
-      value: 2,
-    },
-  ];
   const [form] = Form.useForm();
   const dateFormat = 'YYYY/MM/DD'; //日期格式
   return (
@@ -141,14 +141,17 @@ function History() {
               </Button>
             </Form.Item>
           </Col>
-          {/* <Col span={6} >
-            <Form.Item label="邮箱" name="email">
-              <Input placeholder="请输入用户邮箱"></Input>
-            </Form.Item>
-          </Col> */}
         </Row>
       </Form>
       <Table columns={columns} dataSource={data} />
+      <Modal
+        title="订单详情"
+        visible={isCaseModalVisible > 0}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <CaseForm formData={caseFormData}></CaseForm>
+      </Modal>
     </MainContainer>
   );
 }

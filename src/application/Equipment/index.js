@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MainContainer } from './style';
 import moment, { months } from 'moment';
 import EquipmentForm from '../../components/equipmentForm';
+import {  modalState } from '../../common/constant';
 import {
   Form,
   Input,
@@ -9,14 +10,10 @@ import {
   Modal,
   Row,
   Col,
-  Select,
-  DatePicker,
   Table,
   Space,
 } from 'antd';
-import { changeConfirmLocale } from 'antd/lib/modal/locale';
-const { RangePicker } = DatePicker;
-const { Option } = Select;
+
 
 function Equipment() {
   //负责当前需要处理的订单，所以没有订单状态的选择下拉框
@@ -100,35 +97,35 @@ function Equipment() {
     console.log('Failed:', errorInfo);
   };
 
-  //对话框的显示  0 新增，1更改，2详情
-  const [isModalVisible, setIsModalVisible] = useState(0);
+ //对话框的显示 
+ const [isModalVisible, setIsModalVisible] = useState(modalState.INITIAL);
 
-  const [formData, setFormData] = useState(null);
-  const showModal = () => {
-    setFormData(null); //重新置为空
-    setIsModalVisible(1);
-  };
-  //新增公寓配置
-  const handleOk = () => {
-    console.log(isModalVisible); //判单当前的状态
-    console.log('父组件的formData', formData);
-    setIsModalVisible(0);
-  };
-  //取消
-  const handleCancel = () => {
-    setIsModalVisible(0);
-  };
-  const showChangeModal = (record) => {
-    //console.log(record);
-    setFormData(record);
-    // setIsChangeModalVisible(true);
-    setIsModalVisible(2);
-  };
+ const [formData, setFormData] = useState(null);
+ const showAddModal = () => {
+   setFormData(null); //重新置为空
+   setIsModalVisible(modalState.ADD);
+ };
+ //新增公寓配置
+ const handleOk = () => {
+   console.log(isModalVisible); //判单当前的状态
+   console.log('父组件的formData', formData);
+   setIsModalVisible(modalState.INITIAL);
+ };
+ //取消
+ const handleCancel = () => {
+   setIsModalVisible(modalState.INITIAL);
+ };
+ const showChangeModal = (record) => {
+   //console.log(record);
+   setFormData(record);
+   // setIsChangeModalVisible(true);
+   setIsModalVisible(modalState.CHANGE);
+ };
 
-  const showDetailModal = (record) => {
-    setFormData(record);
-    setIsModalVisible(3);
-  };
+ const showDetailModal = (record) => {
+   setFormData(record);
+   setIsModalVisible(modalState.DETAIL);
+ };
   return (
     <MainContainer>
       <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}>
@@ -154,7 +151,7 @@ function Equipment() {
           {/* 新增公寓配置 */}
           <Col span={1}>
             <Form.Item>
-              <Button type="default" onClick={showModal}>
+              <Button type="default" onClick={showAddModal}>
                 新增
               </Button>
             </Form.Item>

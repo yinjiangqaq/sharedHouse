@@ -50,7 +50,7 @@ function EquipmentForm(props) {
             />
           </Form.Item>
         </Col>
-        <Col span={12}>
+        <Col span={isCommon ? 6 : 12}>
           <Form.Item
             name="price"
             label="价格明细"
@@ -64,27 +64,26 @@ function EquipmentForm(props) {
             <Input
               prefix="￥"
               suffix={isCommon ? '' : '/每晚'}
-              style={isCommon ? { width: '50%' } : { width: '100%' }}
               placeholder={
                 isCommon ? '请输入公共资源的价格' : '请输入公寓的价格'
               }
               disabled={modalState === 3}
             />
-            {isCommon ? (
-              <Select
-                style={{ marginLeft: '5%', width: '40%' }}
-                defaultValue={1}
-                disabled={modalState === 3}
-              >
+          </Form.Item>
+        </Col>
+        {isCommon ? (
+          <Col span={6}>
+            <Form.Item name="setType" label=" ">
+              <Select disabled={modalState === 3}>
                 {setType.map((item, index) => {
                   return <Option value={item.value}>{item.label}</Option>;
                 })}
               </Select>
-            ) : (
-              ''
-            )}
-          </Form.Item>
-        </Col>
+            </Form.Item>
+          </Col>
+        ) : (
+          ''
+        )}
       </Row>
       <Row gutter={16}>
         <Col span={12}>
