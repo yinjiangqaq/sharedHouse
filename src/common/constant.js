@@ -36,3 +36,28 @@ export const STATE = [
     value: 2,
   },
 ];
+
+//违规行为
+
+export const creditLess = [
+  {
+    label: '毁坏或偷窃公寓物品',
+    value: 30,
+  },
+  {
+    label: '毁坏公共设施',
+    value: 20,
+  },
+  {
+    label: '在公寓进行黄赌毒等违法行为',
+    value: 50,
+  },
+  {
+    label: '恶意污染公寓环境',
+    value: 10,
+  },
+  {
+    label: '无',
+    value: 0,
+  },
+];

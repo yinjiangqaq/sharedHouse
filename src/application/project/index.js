@@ -62,7 +62,7 @@ function Project(props) {
         },
         {
           id: 6,
-          name: '历史数据统计',
+          name: '历史订单管理',
           label: 'history',
         },
       ],

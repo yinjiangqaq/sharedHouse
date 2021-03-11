@@ -1,6 +1,7 @@
 import React from 'react';
 import { MainContainer } from './style';
 import moment, { months } from 'moment';
+import { creditLess } from '../../common/constant';
 import {
   Form,
   Input,
@@ -26,24 +27,36 @@ function Credit() {
   let now = moment();
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text) => <a>{text}</a>,
+      title: '用户名',
+      dataIndex: 'userName',
+      key: 'userName',
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: '用户ID',
+      dataIndex: 'userId',
+      key: 'userId',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: '订单ID',
+      dataIndex: 'caseId',
+      key: 'caseId',
+    },
+    {
+      title: '违规行为',
+      dataIndex: 'creditLess',
+      key: 'creditLess',
+      render: (text, record) => {
+        // return creditLess.filter((item) => item.value === record.creditLess)[0]
+        //   .label;
+        let temp = creditLess.filter(
+          (item) => item.value === record.creditless
+        );
+        return temp.length > 0 ? temp[0].label : '';
+      },
     },
 
     {
-      title: 'Action',
+      title: '操作',
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
@@ -57,9 +70,11 @@ function Credit() {
   const data = [
     {
       key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
+      caseId: 1,
+
+      userId: 1,
+      creditless: 10,
+      userName: '小林',
     },
     {
       key: '2',
@@ -82,28 +97,33 @@ function Credit() {
       <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}>
         <Row gutter={24}>
           <Col span={6}>
-            <Form.Item label="日期" name="time">
-              <RangePicker
-                defaultValue={[
-                  moment(
-                    `${now.year()}/${now.month()}/${now.date() - 1 }`,
-                    dateFormat
-                  ),
-                  moment(
-                    `${now.year()}/${now.month()}/${now.date()}`,
-                    dateFormat
-                  ),
-                ]}
-                format={dateFormat}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={6} offset={1}>
             <Form.Item label="用户ID" name="userId">
-              <Input placeholder="请输入用户名或者用户id"></Input>
+              <Input placeholder="请输入用户id"></Input>
             </Form.Item>
           </Col>
-      
+          <Col span={6}>
+            <Form.Item label="订单ID" name="caseId">
+              <Input placeholder="请输入订单id"></Input>
+            </Form.Item>
+          </Col>
+          <Col span={7}>
+            <Form.Item label="违规行为" name="creditLess">
+              <Select placeholder="请选择违规行为">
+                {
+                  //违规的行为，所以不存在0
+                  creditLess
+                    .filter((item) => item.value !== 0)
+                    .map((item, index) => {
+                      return (
+                        <Option key={index} value={item.value}>
+                          {item.label}
+                        </Option>
+                      );
+                    })
+                }
+              </Select>
+            </Form.Item>
+          </Col>
           <Col offset={1} span={3}>
             <Form.Item>
               <Button type="primary" htmlType="submit">
@@ -111,11 +131,6 @@ function Credit() {
               </Button>
             </Form.Item>
           </Col>
-          {/* <Col span={6} >
-            <Form.Item label="邮箱" name="email">
-              <Input placeholder="请输入用户邮箱"></Input>
-            </Form.Item>
-          </Col> */}
         </Row>
       </Form>
       <Table columns={columns} dataSource={data} />

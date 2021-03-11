@@ -34,10 +34,20 @@ function History() {
     setCaseFormData(record);
     setIsCaseModalVisible(modalState.DETAIL);
   };
+  const showChangeModal = (record) => {
+    setCaseFormData(record);
+    setIsCaseModalVisible(modalState.CHANGE);
+  };
   //取消
   const handleCancel = () => {
     setIsCaseModalVisible(modalState.INITIAL);
   };
+  const handleOk = () => {
+    console.log(isCaseModalVisible); //判单当前的状态
+    console.log('父组件的formData', caseFormData);
+    setIsCaseModalVisible(modalState.INITIAL);
+  };
+
   let now = moment();
   const columns = [
     {
@@ -67,7 +77,7 @@ function History() {
       render: (text, record) => (
         <Space size="middle">
           <a onClick={() => showDetailModal(record)}>详情</a>
-          <a>扣除信用分</a>
+          <a onClick={() => showChangeModal(record)}>扣除信用分</a>
         </Space>
       ),
     },
@@ -80,7 +90,7 @@ function History() {
       caseId: 1,
       caseName: '平安里',
       time: timestampToTime(+new Date() / 1000),
-
+      creditless: 10,
       customer: '小林',
     },
     {
@@ -88,7 +98,7 @@ function History() {
       caseId: 2,
       caseName: '健身房',
       time: timestampToTime(+new Date() / 1000),
-
+      creditless: 20,
       customer: '小李',
     },
   ];
@@ -148,9 +158,24 @@ function History() {
         title="订单详情"
         visible={isCaseModalVisible > 0}
         onCancel={handleCancel}
-        footer={null}
+        footer={
+          isCaseModalVisible === 3
+            ? null
+            : [
+                <Button key="back" onClick={handleCancel}>
+                  取消
+                </Button>,
+                <Button type="primary" onClick={handleOk}>
+                  更改
+                </Button>,
+              ]
+        }
       >
-        <CaseForm formData={caseFormData}></CaseForm>
+        <CaseForm
+          formData={caseFormData}
+          modalState={isCaseModalVisible}
+          toParent={setCaseFormData}
+        ></CaseForm>
       </Modal>
     </MainContainer>
   );

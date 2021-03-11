@@ -52,9 +52,9 @@ export default [
         component: Device,
       },
       {
-        name: '历史数据统计',
+        name: '历史订单管理',
         path: '/project/history',
-        label: ['租赁管理', '历史数据统计'],
+        label: ['租赁管理', '历史订单管理'],
         component: History,
       },
       {

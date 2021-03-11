@@ -1,6 +1,5 @@
 import React from 'react';
 import { MainContainer } from './style';
-import moment from 'moment';
 import {
   Form,
   Input,
@@ -24,20 +23,24 @@ const onFinishFailed = (errorInfo) => {
 function Account() {
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text) => <a>{text}</a>,
+      title: '用户名',
+      dataIndex: 'userName',
+      key: 'userName',
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: '用户ID',
+      dataIndex: 'userId',
+      key: 'userId',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: '用户邮箱',
+      dataIndex: 'email',
+      key: 'email',
+    },
+    {
+      title: '用户权限',
+      dataIndex: 'permission',
+      key: 'permission',
     },
 
     {
@@ -73,53 +76,25 @@ function Account() {
     },
   ];
 
-  const STATE = [
-    {
-      label: '未完成',
-      value: 0,
-    },
-    {
-      label: '通过',
-      value: 1,
-    },
-    {
-      label: '驳回',
-      value: 2,
-    },
-  ];
   const [form] = Form.useForm();
-  const dateFormat = 'YYYY/MM/DD'; //日期格式
+
   return (
     <MainContainer>
       <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}>
         <Row gutter={24}>
           <Col span={6}>
-            <Form.Item label="日期" name="time">
-              <RangePicker
-                defaultValue={[
-                  moment('2015/01/01', dateFormat),
-                  moment('2015/01/01', dateFormat),
-                ]}
-                format={dateFormat}
-              />
+            <Form.Item label="用户名称" name="userName">
+              <Input placeholder="请输入用户名"></Input>
             </Form.Item>
           </Col>
-          <Col span={6} offset={1}>
+          <Col span={6}>
             <Form.Item label="用户ID" name="userId">
-              <Input placeholder="请输入用户名或者用户id"></Input>
+              <Input placeholder="请输入用户id"></Input>
             </Form.Item>
           </Col>
-          <Col span={6} offset={1}>
-            <Form.Item label="状态" name="state">
-              <Select placeholder="请选择订单的状态">
-                {STATE.map((item, index) => {
-                  return (
-                    <Option key={index} value={item.value}>
-                      {item.label}
-                    </Option>
-                  );
-                })}
-              </Select>
+          <Col span={6}>
+            <Form.Item label="邮箱" name="email">
+              <Input placeholder="请输入用户邮箱"></Input>
             </Form.Item>
           </Col>
           <Col offset={1} span={3}>
@@ -129,11 +104,6 @@ function Account() {
               </Button>
             </Form.Item>
           </Col>
-          {/* <Col span={6} >
-            <Form.Item label="邮箱" name="email">
-              <Input placeholder="请输入用户邮箱"></Input>
-            </Form.Item>
-          </Col> */}
         </Row>
       </Form>
       <Table columns={columns} dataSource={data} />
