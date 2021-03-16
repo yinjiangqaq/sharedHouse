@@ -64,7 +64,7 @@ function CommonEquipment() {
       ellipsis: true,
     },
     {
-      title: 'Action',
+      title: '操作',
       key: 'action',
       render: (text, record) => (
         <Space size="middle">

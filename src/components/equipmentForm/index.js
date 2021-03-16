@@ -56,6 +56,10 @@ function EquipmentForm(props) {
             label="价格明细"
             rules={[
               {
+                pattern: /^\d+$/,
+                message: '只能输入数字',
+              },
+              {
                 required: true,
                 message: '请输入价格',
               },
