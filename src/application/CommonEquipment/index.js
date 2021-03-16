@@ -182,7 +182,7 @@ function CommonEquipment() {
       </Form>
       <Table columns={columns} dataSource={data} />
       <Modal
-        title="公寓配置"
+        title="公共设施配置"
         visible={isModalVisible > 0}
         // onOk={handleOk}
         onCancel={handleCancel}
