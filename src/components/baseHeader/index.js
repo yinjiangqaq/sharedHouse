@@ -39,7 +39,8 @@ function BaseHeader() {
   const handleLogOut = () => {
     //退出登录的方法，后台返回成功之后，前端清理菜单缓存，重定向到登录界面
 
-    window.location.href = window.location.origin + '/#/login';
+    // window.location.href = window.location.origin + '/#/login';
+    window.location.hash = 'login';
   };
   const menu = (
     <Menu>
