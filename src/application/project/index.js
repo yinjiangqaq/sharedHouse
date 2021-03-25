@@ -10,7 +10,7 @@ function Project(props) {
   //console.log(route.children)
   //拿到每个路由的具体的面包屑路径
   const getModelName = () => {
-    if (window.location.hash.slice(1) === '/project') {
+    if (window.location.hash.slice(1) === '/') {
       //默认跳账号管理
       window.location.hash = '#/project/account';
       return [];

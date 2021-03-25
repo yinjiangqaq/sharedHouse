@@ -2,13 +2,21 @@ import { Form, Input, Button } from 'antd';
 import React from 'react';
 import { LoginWrap } from './style';
 import { NavLink, useHistory } from 'react-router-dom';
-
+import { login } from '../../api/user/index';
+import { setToken } from '../../common/util';
 function Login(props) {
   //react hook 路由跳转的方式， navlink和history.push
   let history = useHistory();
   const onFinish = (values) => {
-    console.log('Success:', values);
-    history.push('project');
+    //记住login发送http请求，用的是axios，这个login()函数返回的是promise实例，需要自己做后续操作,成功或者失败
+    login(values).then((res) => {
+      console.log(res);
+      if (res.code === 0) {
+        setToken(res.data); //cookie上设置token
+        history.push('/');
+      }
+    });
+    //
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -27,7 +35,7 @@ function Login(props) {
           onFinishFailed={onFinishFailed}
         >
           <Form.Item
-            name="username"
+            name="email"
             rules={[
               {
                 pattern: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/,

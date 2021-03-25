@@ -12,6 +12,7 @@ import History from '../application/History';
 import Device from '../application/Device';
 import Equipment from '../application/Equipment';
 import CommonEquipment from '../application/CommonEquipment';
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
   {
@@ -23,7 +24,7 @@ export default [
     component: Register,
   },
   {
-    path: '/project',
+    path: '/',
     component: Project,
     //render: () => <Redirect to={'/project/account'}></Redirect>,
     children: [

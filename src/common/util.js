@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 //将时间戳转换为具体的时间,//传给后端的是时间戳
 export const timestampToTime = (timestamp) => {
   var date = new Date(timestamp * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
@@ -12,3 +13,17 @@ export const timestampToTime = (timestamp) => {
   var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
   return `${Y}-${M}-${D} ${h}:${m}:${s}`;
 };
+
+const tokenKey = 'sharedHouse_token';
+
+export function getToken() {
+  return Cookies.get(tokenKey);
+}
+
+export function setToken(token) {
+  return Cookies.set(tokenKey, token);
+}
+
+export function removeToken() {
+  return Cookies.remove(tokenKey);
+}
