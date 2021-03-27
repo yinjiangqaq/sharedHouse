@@ -10,9 +10,10 @@ const axiosInstance = axios.create({
 //请求拦截器
 axiosInstance.interceptors.request.use(
   (config) => {
-    if (getToken().length > 0) {
+    if (getToken() && getToken().length > 0) {
       config.headers['Authorization'] = getToken();
     }
+    //有token的时候，在header塞入token
     return config;
   },
   (err) => {
@@ -22,7 +23,15 @@ axiosInstance.interceptors.request.use(
 );
 // 响应拦截器
 axiosInstance.interceptors.response.use(
-  (res) => res.data,
+  (response) => {
+    const res = response.data;
+    if (res.code === 407) {
+      console.log('token验证失败重定向到登录界面');
+      window.location.hash = 'login';
+      window.location.reload();
+    }
+    return res;
+  },
   (err) => {
     console.log(
       `${err.status || ''}：${err.statusText || ''} ${err.message || ''}`

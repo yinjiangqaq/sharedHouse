@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import style from '../../assets/global-style';
-import { Menu, Dropdown } from 'antd';
+import { Menu, Dropdown, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import { logout } from '../../api/user';
+import { removeToken } from '../../common/util';
 
 const Header = styled.div`
   width: 100%;
@@ -38,9 +40,18 @@ const Header = styled.div`
 function BaseHeader() {
   const handleLogOut = () => {
     //退出登录的方法，后台返回成功之后，前端清理菜单缓存，重定向到登录界面
-
+    logout()
+      .then((res) => {
+        if (res.code === 0) {
+          //删除token
+          removeToken();
+          window.location.hash = 'login';
+        }
+      })
+      .catch((err) => {
+        message.info('err');
+      });
     // window.location.href = window.location.origin + '/#/login';
-    window.location.hash = 'login';
   };
   const menu = (
     <Menu>

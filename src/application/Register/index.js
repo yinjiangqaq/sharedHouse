@@ -1,9 +1,24 @@
-import { Form, Input, Button, Row, Col } from 'antd';
+import { Form, Input, Button, Row, Col, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { RegisterWrap } from './style';
 import Image from '../../assets/imgs/IU.jpeg';
+import { getEmailVerifyCode, register } from '../../api/user/index';
 const onFinish = (values) => {
   console.log('Success:', values);
+  //注册
+  register(values)
+    .then((res) => {
+      console.log(res);
+      if (res.code === 0) {
+        message.info(res.msg);
+        window.location.hash = 'login'; //跳转到登录界面，还是走登录
+      } else {
+        message.error(res.msg);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 const onFinishFailed = (errorInfo) => {
@@ -17,8 +32,7 @@ function Register(props) {
 
   const [showNumber, setShowNumber] = useState(false); //倒计时按钮的显示
 
-
-  let [count, setCount] = useState(60);//倒计时
+  let [count, setCount] = useState(60); //倒计时
 
   //使用的时候，放在form 表单的 onValuesChange字段里面,但是推荐还是使用validator这个主流的方法
   const valuesChange = (changeValues, allValues) => {
@@ -31,12 +45,12 @@ function Register(props) {
   };
 
   const countDown = () => {
-   // console.log(count)
+    // console.log(count)
     if (count === 1) {
       setCount(60);
       setShowNumber(false); //倒计时按钮不显示显示,前面的setTimeout执行结束，就没了，所以定时器就结束了，如果是setInterval实现记得清除定时器
     } else {
-      setCount(count--);//更新count，单纯count--只是在这里会更新，但是外面没有拿到更新的值
+      setCount(count--); //更新count，单纯count--只是在这里会更新，但是外面没有拿到更新的值
       setTimeout(() => countDown(), 1000);
     }
   };
@@ -44,6 +58,18 @@ function Register(props) {
     console.log('获取邮箱验证码');
     setShowNumber(true); //倒计时按钮显示
     countDown();
+    //拿到当前表单中的邮箱
+    // console.log(form.getFieldValue());
+    getEmailVerifyCode(form.getFieldValue())
+      .then((res) => {
+        console.log(res);
+        if (res.code === -1) {
+          message.error(res.msg);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   //动态渲染倒计时按钮
