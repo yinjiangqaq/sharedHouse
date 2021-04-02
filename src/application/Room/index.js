@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MainContainer } from './style';
 import moment, { months } from 'moment';
+import { timestampToMoment } from '../../common/util';
 import {
   Form,
   Input,
@@ -24,7 +25,6 @@ const onFinishFailed = (errorInfo) => {
 };
 function Room() {
   //负责当前需要处理的订单，所以没有订单状态的选择下拉框
-  let now = moment();
   //订单不通过的理由
   const [rejectReason, setRejectReason] = useState('');
   const handleCancel = (e) => {
@@ -122,11 +122,11 @@ function Room() {
               <RangePicker
                 defaultValue={[
                   moment(
-                    `${now.year()}/${now.month()}/${now.date() - 1}`,
+                    timestampToMoment(+new Date() / 1000, true),
                     dateFormat
                   ),
                   moment(
-                    `${now.year()}/${now.month()}/${now.date()}`,
+                    timestampToMoment(+new Date() / 1000, false),
                     dateFormat
                   ),
                 ]}

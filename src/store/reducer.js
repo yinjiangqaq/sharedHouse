@@ -1,7 +1,14 @@
-import { combineReducers } from 'redux-immutable';
-//import { reducer as equipmentReducer } from '../application/Equipment/store/index';
+import { act } from 'react-dom/test-utils';
 
-export default combineReducers({
-  // 之后开发具体功能模块的时候添加reducer
-  // equipment: equipmentReducer,
-});
+export default function reducer(state, action) {
+  switch (action.type) {
+    case 'SET_USERINFO': {
+      return {
+        ...state,
+        userInfo: action.userInfo,
+      };
+    }
+    default:
+      return state;
+  }
+}

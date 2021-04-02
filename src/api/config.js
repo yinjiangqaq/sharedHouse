@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { getToken } from '../common/util';
-const baseUrl = 'http://localhost:7001';
+const baseUrl =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:7001/'
+    : 'http://1.15.229.136:7001/';
 //axios实例以及拦截器配置
 
 const axiosInstance = axios.create({

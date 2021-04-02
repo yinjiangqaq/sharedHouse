@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect, useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
-import style from '../../assets/global-style';
 import { Menu, Dropdown, message } from 'antd';
+// import shallowEqual from 'shallowequal';
 import { UserOutlined } from '@ant-design/icons';
 import { logout } from '../../api/user';
 import { removeToken } from '../../common/util';
+import { getUserInfo } from '../../api/user/index';
+//StoreContext是之前根目录下的index.js的StoreContext绑定的全局上下文，在任何一个组件，都可以通过这种方式访问到
+//加上useContext(StoreContext)
+import { useDispatch, useMappedState, StoreContext } from 'redux-react-hook';
 
 const Header = styled.div`
   width: 100%;
@@ -37,7 +41,9 @@ const Header = styled.div`
   }
 `;
 
-function BaseHeader() {
+function BaseHeader(props) {
+  //用户信息
+  const store = useContext(StoreContext); //拿到全局上下文绑定的store对象
   const handleLogOut = () => {
     //退出登录的方法，后台返回成功之后，前端清理菜单缓存，重定向到登录界面
     logout()
@@ -51,8 +57,32 @@ function BaseHeader() {
       .catch((err) => {
         message.info('err');
       });
-    // window.location.href = window.location.origin + '/#/login';
   };
+  // const mapState = useCallback((state) => ({
+  //   userInfo: state.userInfo,
+  // }));
+  // const { userInfo } = useMappedState(mapState, shallowEqual);
+  const dispatch = useDispatch();
+  const [userInfo, setUserInfo] = useState('未登录'); //需要一个状态userInfo,来做响应式更新。不然userInfo一刷新就没了
+  useEffect(() => {
+    //首次渲染进行，就不会再执行两次了
+    //首次进来调用获取用户信息的接口
+    getUserInfo()
+      .then((res) => {
+        console.log(res);
+        if (!store.getState().userInfo.username) {
+          dispatch({
+            type: 'SET_USERINFO',
+            userInfo: res.data,
+          });
+          setUserInfo(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+
   const menu = (
     <Menu>
       <Menu.Item key="0">
@@ -75,7 +105,9 @@ function BaseHeader() {
           overlay={menu}
           placement="bottomCenter"
           icon={<UserOutlined />}
-        ></Dropdown.Button>
+        >
+          {userInfo.username}
+        </Dropdown.Button>
       </div>
     </Header>
   );

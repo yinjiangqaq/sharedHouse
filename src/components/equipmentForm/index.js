@@ -45,7 +45,7 @@ function EquipmentForm(props) {
           >
             <Input
               placeholder={isCommon ? '请输入公共设施名称' : '请输入公寓名称'}
-              disabled={modalState === 3}
+              disabled={modalState === 3 || modalState === 2}
               //   defaultValue={formData.name}
             />
           </Form.Item>

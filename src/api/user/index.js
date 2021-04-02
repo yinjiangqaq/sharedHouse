@@ -22,4 +22,8 @@ export const register = (params) => {
 export const getEmailVerifyCode = (params) => {
   return axiosInstance.post('/api/getVerifyCode', { ...params }, {});
 };
-                                                                                                                                          
+
+//获取用户信息
+export const getUserInfo = (params) => {
+  return axiosInstance.get('/api/getUserInfo', {}, {});
+};

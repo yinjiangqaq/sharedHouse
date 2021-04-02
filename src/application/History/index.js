@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { MainContainer } from './style';
 import moment, { months } from 'moment';
 import CaseForm from '../../components/caseForm';
-import { timestampToTime } from '../../common/util';
+import { timestampToTime, timestampToMoment } from '../../common/util';
 import { STATE, modalState } from '../../common/constant';
 import {
   Form,
@@ -48,7 +48,6 @@ function History() {
     setIsCaseModalVisible(modalState.INITIAL);
   };
 
-  let now = moment();
   const columns = [
     {
       title: '订单ID',
@@ -114,11 +113,11 @@ function History() {
               <RangePicker
                 defaultValue={[
                   moment(
-                    `${now.year()}/${now.month()}/${now.date() - 1}`,
+                    timestampToMoment(+new Date() / 1000, true),
                     dateFormat
                   ),
                   moment(
-                    `${now.year()}/${now.month()}/${now.date()}`,
+                    timestampToMoment(+new Date() / 1000, false),
                     dateFormat
                   ),
                 ]}

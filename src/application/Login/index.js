@@ -1,4 +1,4 @@
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import React from 'react';
 import { LoginWrap } from './style';
 import { NavLink, useHistory } from 'react-router-dom';
@@ -13,6 +13,7 @@ function Login(props) {
       console.log(res);
       if (res.code === 0) {
         setToken(res.data); //cookie上设置token
+        message.info('登录成功');
         history.push('/');
       }
     });
