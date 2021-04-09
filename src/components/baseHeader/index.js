@@ -55,7 +55,8 @@ function BaseHeader(props) {
         }
       })
       .catch((err) => {
-        message.info('err');
+        console.log(err)
+        message.error(err.message);
       });
   };
   // const mapState = useCallback((state) => ({

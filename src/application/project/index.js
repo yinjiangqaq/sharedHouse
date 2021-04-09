@@ -14,6 +14,7 @@ function Project(props) {
     if (window.location.hash.slice(1) === '/') {
       //默认跳账号管理
       window.location.hash = '#/project/account';
+      window.location.reload()
       return [];
     } else {
       if (
@@ -58,7 +59,7 @@ function Project(props) {
         },
         {
           id: 5,
-          name: '公共资源租赁管理',
+          name: '公共设施租赁管理',
           label: 'common',
         },
         {
@@ -79,7 +80,7 @@ function Project(props) {
         },
         {
           id: 9,
-          name: '公共资源配置管理',
+          name: '公共设施配置管理',
           label: 'commonEquipment',
         },
       ],

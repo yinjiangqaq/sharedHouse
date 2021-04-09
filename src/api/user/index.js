@@ -27,3 +27,9 @@ export const getEmailVerifyCode = (params) => {
 export const getUserInfo = (params) => {
   return axiosInstance.get('/api/getUserInfo', {}, {});
 };
+
+//获取用户列表
+
+export const getUserList = (params) => {
+  return axiosInstance.get('/api/getUserList', {}, {});
+};

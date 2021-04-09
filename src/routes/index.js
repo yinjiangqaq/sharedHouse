@@ -65,9 +65,9 @@ export default [
         component: Equipment,
       },
       {
-        name: '公共资源配置管理',
+        name: '公共设施配置管理',
         path: '/project/commonEquipment',
-        label: ['配置管理', '公共资源配置管理'],
+        label: ['配置管理', '公共设施配置管理'],
         component: CommonEquipment,
       },
     ],

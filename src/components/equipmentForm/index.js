@@ -69,7 +69,7 @@ function EquipmentForm(props) {
               prefix="￥"
               suffix={isCommon ? '' : '/每晚'}
               placeholder={
-                isCommon ? '请输入公共资源的价格' : '请输入公寓的价格'
+                isCommon ? '请输入公共设施的价格' : '请输入公寓的价格'
               }
               disabled={modalState === 3}
             />
@@ -140,13 +140,13 @@ function EquipmentForm(props) {
         <Col span={24}>
           <Form.Item
             name="description"
-            label={isCommon ? '公共资源介绍' : '公寓介绍'}
+            label={isCommon ? '公共设施介绍' : '公寓介绍'}
             rules={
               isCommon
                 ? [
                     {
                       required: true,
-                      message: '请输入公共资源介绍',
+                      message: '请输入公共设施介绍',
                     },
                   ]
                 : [
@@ -159,7 +159,7 @@ function EquipmentForm(props) {
           >
             <Input.TextArea
               rows={4}
-              placeholder={isCommon ? '请输入公共资源介绍' : '请输入公寓介绍'}
+              placeholder={isCommon ? '请输入公共设施介绍' : '请输入公寓介绍'}
               disabled={modalState === 3}
             />
           </Form.Item>
