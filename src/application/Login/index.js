@@ -2,7 +2,7 @@ import { Form, Input, Button, message } from 'antd';
 import React from 'react';
 import { LoginWrap } from './style';
 import { NavLink, useHistory } from 'react-router-dom';
-import { login } from '../../api/user/index';
+import { login } from '../../api/admin/index';
 import { setToken } from '../../common/util';
 function Login(props) {
   //react hook 路由跳转的方式， navlink和history.push

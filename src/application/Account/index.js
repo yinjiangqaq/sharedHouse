@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MainContainer } from './style';
 import {
   Form,
@@ -11,6 +11,7 @@ import {
   Table,
   Space,
 } from 'antd';
+import { getUserList } from '../../api/user/index';
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 const onFinish = (values) => {
@@ -55,6 +56,15 @@ function Account() {
     },
   ];
   //拿取用户列表数据
+  useEffect(() => {
+    getUserList()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
   const data = [
     {
       key: '1',

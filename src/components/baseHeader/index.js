@@ -2,10 +2,11 @@ import React, { useEffect, useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Menu, Dropdown, message } from 'antd';
 // import shallowEqual from 'shallowequal';
+import Image from '../../assets/imgs/home.png';
 import { UserOutlined } from '@ant-design/icons';
-import { logout } from '../../api/user';
+import { logout } from '../../api/admin';
 import { removeToken } from '../../common/util';
-import { getUserInfo } from '../../api/user/index';
+import { getUserInfo } from '../../api/admin/index';
 //StoreContext是之前根目录下的index.js的StoreContext绑定的全局上下文，在任何一个组件，都可以通过这种方式访问到
 //加上useContext(StoreContext)
 import { useDispatch, useMappedState, StoreContext } from 'redux-react-hook';
@@ -32,6 +33,7 @@ const Header = styled.div`
     width: 38px;
     height: 38px;
     margin-left: 10px;
+    background: url(${Image}) center no-repeat;
   }
   .products {
     line-height: 38px;
@@ -55,7 +57,7 @@ function BaseHeader(props) {
         }
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         message.error(err.message);
       });
   };

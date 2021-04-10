@@ -1,8 +1,8 @@
 import { Form, Input, Button, Row, Col, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { RegisterWrap } from './style';
-import Image from '../../assets/imgs/IU.jpeg';
-import { getEmailVerifyCode, register } from '../../api/user/index';
+//import Image from '../../assets/imgs/IU.jpeg';
+import { getEmailVerifyCode, register } from '../../api/admin/index';
 const onFinish = (values) => {
   console.log('Success:', values);
   //注册
@@ -94,7 +94,13 @@ function Register(props) {
     }
   };
   return (
-    <RegisterWrap style={{ backgroundImage: `url(${Image})` }}>
+    <RegisterWrap
+      style={
+        {
+          //backgroundImage: `url(${Image})`
+        }
+      }
+    >
       <div className="RegisterContainer">
         <div className="FormTitle">注册账号</div>
         <Form
