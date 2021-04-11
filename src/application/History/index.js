@@ -26,7 +26,7 @@ const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
 function History() {
-  const [caseFormData, setCaseFormData] = useState(null);
+  const [caseFormData, setCaseFormData] = useState(null);//订单数据
   const [isCaseModalVisible, setIsCaseModalVisible] = useState(
     modalState.INITIAL
   );
@@ -69,14 +69,24 @@ function History() {
       dataIndex: 'time',
       key: 'time',
     },
-
+    {
+      title: '订单状态',
+      dataIndex: 'state',
+      key: 'state',
+      render: (text, record) => {
+        return (
+          <Space size="middle">
+            {STATE.find((item) => item.value === record.state).label}
+          </Space>
+        );
+      },
+    },
     {
       title: '订单操作',
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
           <a onClick={() => showDetailModal(record)}>详情</a>
-          <a onClick={() => showChangeModal(record)}>扣除信用分</a>
         </Space>
       ),
     },
@@ -90,6 +100,7 @@ function History() {
       caseName: '平安里',
       time: timestampToTime(+new Date() / 1000),
       creditless: 10,
+      state: 1,
       customer: '小林',
     },
     {
@@ -98,6 +109,7 @@ function History() {
       caseName: '健身房',
       time: timestampToTime(+new Date() / 1000),
       creditless: 20,
+      state: 2,
       customer: '小李',
     },
   ];
@@ -133,7 +145,7 @@ function History() {
           <Col span={6} offset={1}>
             <Form.Item label="状态" name="state">
               <Select placeholder="请选择订单的状态">
-                {STATE.map((item, index) => {
+                {STATE.filter((item) => item.value !== 0).map((item, index) => {
                   return (
                     <Option key={index} value={item.value}>
                       {item.label}
@@ -157,18 +169,14 @@ function History() {
         title="订单详情"
         visible={isCaseModalVisible > 0}
         onCancel={handleCancel}
-        footer={
-          isCaseModalVisible === 3
-            ? null
-            : [
-                <Button key="back" onClick={handleCancel}>
-                  取消
-                </Button>,
-                <Button type="primary" onClick={handleOk}>
-                  更改
-                </Button>,
-              ]
-        }
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            取消
+          </Button>,
+          <Button type="primary" onClick={handleOk}>
+            更改
+          </Button>,
+        ]}
       >
         <CaseForm
           formData={caseFormData}

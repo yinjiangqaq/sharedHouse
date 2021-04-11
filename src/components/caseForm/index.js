@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Form, Input, Row, Col, Select } from 'antd';
 import { creditLess } from '../../common/constant';
+import TextArea from 'antd/lib/input/TextArea';
 const { Option } = Select;
 
 export const Container = styled.div`
@@ -54,22 +55,27 @@ function CaseForm(props) {
         </Col>
       </Row>
       <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item name="creditless" label="信用分扣除">
-            <Select
-              placeholder="请选择该订单存在的违规行为"
-              disabled={modalState === 3}
-            >
-              {creditLess.map((item, index) => {
-                return (
-                  <Option key={index} value={item.value}>
-                    {item.label}
-                  </Option>
-                );
-              })}
-            </Select>
-          </Form.Item>
-        </Col>
+        {formData.state === 1 ? (
+          <Col span={12}>
+            <Form.Item name="creditless" label="信用分扣除">
+              <Select placeholder="请选择该订单存在的违规行为">
+                {creditLess.map((item, index) => {
+                  return (
+                    <Option key={index} value={item.value}>
+                      {item.label}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
+        ) : (
+          <Col span={12}>
+            <Form.Item name="rejectReason" label="驳回理由">
+              <Input.TextArea disabled />
+            </Form.Item>
+          </Col>
+        )}
       </Row>
       {/* 公寓配置服务信息 */}
     </Form>
