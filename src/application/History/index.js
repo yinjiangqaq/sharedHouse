@@ -34,10 +34,10 @@ function History() {
     setCaseFormData(record);
     setIsCaseModalVisible(modalState.DETAIL);
   };
-  const showChangeModal = (record) => {
-    setCaseFormData(record);
-    setIsCaseModalVisible(modalState.CHANGE);
-  };
+  // const showChangeModal = (record) => {
+  //   setCaseFormData(record);
+  //   setIsCaseModalVisible(modalState.CHANGE);
+  // };
   //取消
   const handleCancel = () => {
     setIsCaseModalVisible(modalState.INITIAL);
