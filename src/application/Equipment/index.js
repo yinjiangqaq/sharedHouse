@@ -1,19 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MainContainer } from './style';
 import moment, { months } from 'moment';
 import EquipmentForm from '../../components/equipmentForm';
-import {  modalState } from '../../common/constant';
+import { modalState } from '../../common/constant';
+import {
+  addRoom,
+  changeRoom,
+  findRoom,
+  deleteRoom,
+} from '../../api/roomConfig/index';
 import {
   Form,
   Input,
   Button,
   Modal,
+  Spin,
   Row,
   Col,
   Table,
   Space,
+  message,
+  Popconfirm,
 } from 'antd';
-
 
 function Equipment() {
   //负责当前需要处理的订单，所以没有订单状态的选择下拉框
@@ -58,6 +66,18 @@ function Equipment() {
         <Space size="middle">
           <a onClick={() => showDetailModal(record)}>详情</a>
           <a onClick={() => showChangeModal(record)}>更改</a>
+          <Popconfirm
+            placement="topRight"
+            title="确认要删除这项公寓配置吗？"
+            onConfirm={() => {
+              //删除对应的项
+              deleteRecord(record);
+            }}
+            okText="确认"
+            cancelText="取消"
+          >
+            <a>删除</a>
+          </Popconfirm>
         </Space>
       ),
     },
@@ -89,43 +109,102 @@ function Equipment() {
 
   const [form] = Form.useForm();
   const dateFormat = 'YYYY/MM/DD'; //日期格式
+  const [tableData, setTableData] = useState(data);
+
+  const [tableSpinning, setTableSpinning] = useState(false);
+  const deleteRecord = (record) => {
+    deleteRoom({ name: record.name })
+      .then((res) => {
+        if (res.status === 200) {
+          message.info('删除成功');
+          onFinish(form.getFieldValue());
+        }
+      })
+      .catch((err) => {
+        message.error(err.message);
+      });
+  };
+  //查询
   const onFinish = (values) => {
     console.log('Success:', values);
+    setTableSpinning(true);
+    findRoom(values)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log(res.data);
+          setTableData(res.data);
+          setTableSpinning(false);
+          //   tableData = res.data;
+        }
+      })
+      .catch((err) => {
+        message.error(err.message);
+      });
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+  //表格数据
 
- //对话框的显示 
- const [isModalVisible, setIsModalVisible] = useState(modalState.INITIAL);
+  useEffect(() => {
+    onFinish({ name: '', owner: '' });
+  }, []);
+  //对话框的显示
+  const [isModalVisible, setIsModalVisible] = useState(modalState.INITIAL);
 
- const [formData, setFormData] = useState(null);
- const showAddModal = () => {
-   setFormData(null); //重新置为空
-   setIsModalVisible(modalState.ADD);
- };
- //新增公寓配置
- const handleOk = () => {
-   console.log(isModalVisible); //判单当前的状态
-   console.log('父组件的formData', formData);
-   setIsModalVisible(modalState.INITIAL);
- };
- //取消
- const handleCancel = () => {
-   setIsModalVisible(modalState.INITIAL);
- };
- const showChangeModal = (record) => {
-   //console.log(record);
-   setFormData(record);
-   // setIsChangeModalVisible(true);
-   setIsModalVisible(modalState.CHANGE);
- };
+  const [formData, setFormData] = useState(null);
+  const showAddModal = () => {
+    setFormData(null); //重新置为空
+    setIsModalVisible(modalState.ADD);
+  };
+  //新增公寓配置
+  const handleOk = () => {
+    console.log(isModalVisible); //判单当前的状态
+    console.log('父组件的formData', formData);
+    //新增
+    if (isModalVisible === 1) {
+      addRoom(formData)
+        .then((res) => {
+          if (res.status === 200) {
+            message.info('新增成功');
+            onFinish(form.getFieldValue());
+          }
+        })
+        .catch((err) => {
+          message.error(err.message);
+        });
+    } else if (isModalVisible === 2) {
+      //更改配置
+      changeRoom(formData)
+        .then((res) => {
+          if (res.status === 200) {
+            message.info('更改成功');
+            onFinish(form.getFieldValue());
+          }
+        })
+        .catch((err) => {
+          message.error(err.message);
+        });
+    }
 
- const showDetailModal = (record) => {
-   setFormData(record);
-   setIsModalVisible(modalState.DETAIL);
- };
+    setIsModalVisible(modalState.INITIAL);
+  };
+  //取消
+  const handleCancel = () => {
+    setIsModalVisible(modalState.INITIAL);
+  };
+  const showChangeModal = (record) => {
+    //console.log(record);
+    setFormData(record);
+    // setIsChangeModalVisible(true);
+    setIsModalVisible(modalState.CHANGE);
+  };
+
+  const showDetailModal = (record) => {
+    setFormData(record);
+    setIsModalVisible(modalState.DETAIL);
+  };
   return (
     <MainContainer>
       <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}>
@@ -158,7 +237,9 @@ function Equipment() {
           </Col>
         </Row>
       </Form>
-      <Table columns={columns} dataSource={data} />
+      <Spin tip="加载中..." spinning={tableSpinning}>
+        <Table columns={columns} dataSource={tableData} />
+      </Spin>
       <Modal
         title="公寓配置"
         visible={isModalVisible > 0}

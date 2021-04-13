@@ -11,7 +11,7 @@ function EquipmentForm(props) {
   let { formData, modalState, toParent, isCommon } = props;
   //toparent拿到父组件的setFormData,从而可以子组件更新数据给父组件
   //console.log(formData);
-  console.log(isCommon);
+  //console.log(isCommon);
   const [form] = Form.useForm();
   // console.log(form);
   if (formData !== null) {
@@ -21,7 +21,7 @@ function EquipmentForm(props) {
   }
 
   const formDataChange = (changedValues, allValues) => {
-    console.log(allValues);
+    // console.log(allValues);
     toParent(allValues);
   };
   return (
@@ -78,7 +78,7 @@ function EquipmentForm(props) {
         {isCommon ? (
           <Col span={6}>
             <Form.Item name="setType" label=" ">
-              <Select disabled={modalState === 3}>
+              <Select disabled={modalState === 2 || modalState === 3}>
                 {setType.map((item, index) => {
                   return <Option value={item.value}>{item.label}</Option>;
                 })}

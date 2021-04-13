@@ -1,23 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MainContainer } from './style';
 import moment, { months } from 'moment';
 import EquipmentForm from '../../components/equipmentForm';
 import { setType, modalState } from '../../common/constant';
+import {
+  addDevice,
+  findDevice,
+  changeDevice,
+  deleteDevice,
+} from '../../api/deviceConfig/index';
 import {
   Form,
   Input,
   Button,
   Modal,
   Row,
+  message,
+  Popconfirm,
+  Spin,
   Col,
-  Select,
-  DatePicker,
   Table,
   Space,
 } from 'antd';
-import { changeConfirmLocale } from 'antd/lib/modal/locale';
-const { RangePicker } = DatePicker;
-const { Option } = Select;
 
 function CommonEquipment() {
   //负责当前需要处理的订单，所以没有订单状态的选择下拉框
@@ -70,6 +74,18 @@ function CommonEquipment() {
         <Space size="middle">
           <a onClick={() => showDetailModal(record)}>详情</a>
           <a onClick={() => showChangeModal(record)}>更改</a>
+          <Popconfirm
+            placement="topRight"
+            title="确认要删除这项公共设施配置吗？"
+            onConfirm={() => {
+              //删除对应的项
+              deleteRecord(record);
+            }}
+            okText="确认"
+            cancelText="取消"
+          >
+            <a>删除</a>
+          </Popconfirm>
         </Space>
       ),
     },
@@ -111,15 +127,46 @@ function CommonEquipment() {
   const [form] = Form.useForm();
   const dateFormat = 'YYYY/MM/DD'; //日期格式
   //查询表单
+  const [tableData, setTableData] = useState(data);
+
+  const [tableSpinning, setTableSpinning] = useState(false);
+
+  const deleteRecord = (record) => {
+    deleteDevice({ address: record.address, setType: record.setType })
+      .then((res) => {
+        if (res.status === 200) {
+          message.info('删除成功');
+          onFinish(form.getFieldValue());
+        }
+      })
+      .catch((err) => {
+        message.error(err.message);
+      });
+  };
   const onFinish = (values) => {
     console.log('Success:', values);
+    setTableSpinning(true);
+    findDevice(values)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log(res.data);
+          setTableData(res.data);
+          setTableSpinning(false);
+        }
+      })
+      .catch((err) => {
+        message.error(err.message);
+      });
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-
-  //对话框的显示 
+  //初始化
+  useEffect(() => {
+    onFinish({ device: '', name: '' });
+  }, []);
+  //对话框的显示
   const [isModalVisible, setIsModalVisible] = useState(modalState.INITIAL);
 
   const [formData, setFormData] = useState(null);
@@ -131,6 +178,33 @@ function CommonEquipment() {
   const handleOk = () => {
     console.log(isModalVisible); //判单当前的状态
     console.log('父组件的formData', formData);
+    //新增
+    if (isModalVisible === 1) {
+      addDevice(formData)
+        .then((res) => {
+          if (res.status === 200) {
+            message.info('新增成功');
+            //查找当前查询表单对应的数据
+            onFinish(form.getFieldValue());
+          }
+        })
+        .catch((err) => {
+          message.error(err.message);
+        });
+    } else if (isModalVisible === 2) {
+      //更改配置
+      changeDevice(formData)
+        .then((res) => {
+          if (res.status === 200) {
+            message.info('更改成功');
+            console.log(form);
+            onFinish(form.getFieldValue());
+          }
+        })
+        .catch((err) => {
+          message.error(err.message);
+        });
+    }
     setIsModalVisible(modalState.INITIAL);
   };
   //取消
@@ -158,8 +232,8 @@ function CommonEquipment() {
             </Form.Item>
           </Col>
           <Col span={6} offset={1}>
-            <Form.Item label="房东姓名" name="name">
-              <Input placeholder="请输入房东姓名"></Input>
+            <Form.Item label="联系人姓名" name="name">
+              <Input placeholder="请输入联系人姓名"></Input>
             </Form.Item>
           </Col>
 
@@ -180,7 +254,9 @@ function CommonEquipment() {
           </Col>
         </Row>
       </Form>
-      <Table columns={columns} dataSource={data} />
+      <Spin tip="加载中..." spinning={tableSpinning}>
+        <Table columns={columns} dataSource={tableData} />
+      </Spin>
       <Modal
         title="公共设施配置"
         visible={isModalVisible > 0}

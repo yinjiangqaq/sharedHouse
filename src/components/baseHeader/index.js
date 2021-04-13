@@ -84,7 +84,7 @@ function BaseHeader(props) {
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, []);
 
   const menu = (
     <Menu>

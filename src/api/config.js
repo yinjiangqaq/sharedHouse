@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getToken } from '../common/util';
+import { message } from 'antd';
 const baseUrl =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:7001/'
@@ -32,6 +33,9 @@ axiosInstance.interceptors.response.use(
       console.log('token验证失败重定向到登录界面');
       window.location.hash = 'login';
       window.location.reload();
+    } else if (res.code === -1) {
+      //如果请求失败，显示错误信息
+      message.error(res.msg);
     }
     return res;
   },
@@ -43,6 +47,4 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-
-
-export default axiosInstance
+export default axiosInstance;
