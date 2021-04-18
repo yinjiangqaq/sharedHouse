@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MainContainer } from './style';
 import {
   Form,
@@ -6,22 +6,15 @@ import {
   Button,
   Row,
   Col,
-  Select,
-  DatePicker,
   Table,
   Space,
+  message,
+  Spin,
 } from 'antd';
 import { getUserList } from '../../api/user/index';
-const { RangePicker } = DatePicker;
-const { Option } = Select;
-const onFinish = (values) => {
-  console.log('Success:', values);
-};
 
-const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
 function Account() {
+  const [currentPage, setCurrentPage] = useState(1);
   const columns = [
     {
       title: '用户名',
@@ -39,32 +32,16 @@ function Account() {
       key: 'email',
     },
     {
-      title: '用户权限',
-      dataIndex: 'permission',
-      key: 'permission',
+      title: '用户角色',
+      dataIndex: 'role',
+      key: 'role',
     },
-
     {
-      title: 'Action',
-      key: 'action',
-      render: (text, record) => (
-        <Space size="middle">
-          <a>Invite {record.name}</a>
-          <a>Delete</a>
-        </Space>
-      ),
+      title: '用户信用',
+      dataIndex: 'credit',
+      key: 'credit',
     },
   ];
-  //拿取用户列表数据
-  useEffect(() => {
-    getUserList()
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
   const data = [
     {
       key: '1',
@@ -85,9 +62,41 @@ function Account() {
       address: 'Sidney No. 1 Lake Park',
     },
   ];
-
   const [form] = Form.useForm();
+  const [tableData, setTableData] = useState(data); //表格数据
+  const [caseSum, setCaseSum] = useState(1); //订单总数
+  const [tableSpinning, setTableSpinning] = useState(false);
+  const onFinish = (values) => {
+    if (!values.pageNum) {
+      values.pageNum = 1;
+      setCurrentPage(1);
+    }
+    console.log('Success:', values);
+    setTableSpinning(true);
+    getUserList(values)
+      .then((res) => {
+        console.log(res.data);
+        setTableData(res.data.caseData);
+        setCaseSum(res.data.sum);
+        setTableSpinning(false);
+      })
+      .catch((err) => {
+        message.error(err.message);
+      });
+  };
 
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+  //拿取用户列表数据
+  useEffect(() => {
+    onFinish({
+      pageNum: 1,
+      userName: '',
+      userId: undefined,
+      email: '',
+    });
+  }, []);
   return (
     <MainContainer>
       <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}>
@@ -116,7 +125,23 @@ function Account() {
           </Col>
         </Row>
       </Form>
-      <Table columns={columns} dataSource={data} />
+      <Spin tip="加载中..." spinning={tableSpinning}>
+        <Table
+          columns={columns}
+          dataSource={tableData}
+          bordered
+          pagination={{
+            total: caseSum,
+            current: currentPage,
+            onChange: (pageNum, pageSize) => {
+              console.log(pageNum);
+              setCurrentPage(pageNum);
+              //分页
+              onFinish({ ...form.getFieldValue(), pageNum: pageNum });
+            },
+          }}
+        />
+      </Spin>
     </MainContainer>
   );
 }

@@ -20,3 +20,13 @@ export const changeRoom = (params) => {
 export const deleteRoom = (params) => {
   return axiosInstance.post('/api/deleteRoom', { ...params }, {});
 };
+
+//查找公寓订单
+export const findRoomCase = (params) => {
+  return axiosInstance.post('/api/findRoomCase', { ...params }, {});
+};
+
+//公寓订单操作
+export const roomCaseAction = (params) => {
+  return axiosInstance.post('/api/roomCaseAction', { ...params }, {});
+};

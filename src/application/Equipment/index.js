@@ -238,7 +238,7 @@ function Equipment() {
         </Row>
       </Form>
       <Spin tip="加载中..." spinning={tableSpinning}>
-        <Table columns={columns} dataSource={tableData} />
+        <Table columns={columns} dataSource={tableData} bordered />
       </Spin>
       <Modal
         title="公寓配置"

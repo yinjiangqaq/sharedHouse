@@ -15,6 +15,8 @@ function Login(props) {
         setToken(res.data); //cookie上设置token
         message.info('登录成功');
         history.push('/');
+      } else if (res.code === 403) {
+        message.error(res.msg);
       }
     });
     //

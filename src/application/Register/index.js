@@ -13,7 +13,8 @@ const onFinish = (values) => {
         message.info(res.msg);
         window.location.hash = 'login'; //跳转到登录界面，还是走登录
       } else {
-        message.error(res.msg);
+        // message.error(res.msg);
+        console.log(res.msg);
       }
     })
     .catch((err) => {

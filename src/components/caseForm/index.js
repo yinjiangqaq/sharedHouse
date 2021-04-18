@@ -11,7 +11,7 @@ export const Container = styled.div`
 
 function CaseForm(props) {
   let { formData, modalState, toParent } = props;
-
+  const caseState = formData.state;
   const [form] = Form.useForm();
   if (formData !== null) {
     form.setFieldsValue(formData);
@@ -20,6 +20,10 @@ function CaseForm(props) {
   }
   const formDataChange = (changedValues, allValues) => {
     console.log(allValues);
+    if (!allValues.state) {
+      //防止丢了之前的订单状态而导致的前端页面显示的bug
+      allValues.state = caseState;
+    }
     toParent(allValues);
   };
   return (
@@ -57,7 +61,7 @@ function CaseForm(props) {
       <Row gutter={16}>
         {formData.state === 1 ? (
           <Col span={12}>
-            <Form.Item name="creditless" label="信用分扣除">
+            <Form.Item name="creditLess" label="信用分扣除">
               <Select placeholder="请选择该订单存在的违规行为">
                 {creditLess.map((item, index) => {
                   return (
@@ -71,7 +75,7 @@ function CaseForm(props) {
           </Col>
         ) : (
           <Col span={12}>
-            <Form.Item name="rejectReason" label="驳回理由">
+            <Form.Item name="reason" label="驳回理由">
               <Input.TextArea disabled />
             </Form.Item>
           </Col>

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MainContainer } from './style';
 import moment, { months } from 'moment';
 import { creditLess } from '../../common/constant';
+import { getUserCreditList } from '../../api/user/index';
 import {
   Form,
   Input,
@@ -9,19 +10,14 @@ import {
   Row,
   Col,
   Select,
-  DatePicker,
+  message,
+  Spin,
   Table,
   Space,
 } from 'antd';
-const { RangePicker } = DatePicker;
-const { Option } = Select;
-const onFinish = (values) => {
-  console.log('Success:', values);
-};
 
-const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
+const { Option } = Select;
+
 function Credit() {
   //负责当前需要处理的订单，所以没有订单状态的选择下拉框
   let now = moment();
@@ -49,22 +45,21 @@ function Credit() {
         // return creditLess.filter((item) => item.value === record.creditLess)[0]
         //   .label;
         let temp = creditLess.filter(
-          (item) => item.value === record.creditless
+          (item) => item.value === record.creditLess
         );
         return temp.length > 0 ? temp[0].label : '';
       },
     },
-
-    {
-      title: '操作',
-      key: 'action',
-      render: (text, record) => (
-        <Space size="middle">
-          <a>通过</a>
-          <a>驳回</a>
-        </Space>
-      ),
-    },
+    // {
+    //   title: '操作',
+    //   key: 'action',
+    //   render: (text, record) => (
+    //     <Space size="middle">
+    //       <a>通过</a>
+    //       <a>驳回</a>
+    //     </Space>
+    //   ),
+    // },
   ];
 
   const data = [
@@ -91,7 +86,41 @@ function Credit() {
   ];
 
   const [form] = Form.useForm();
-  const dateFormat = 'YYYY/MM/DD'; //日期格式
+  const [currentPage, setCurrentPage] = useState(1);
+  const [tableData, setTableData] = useState(data); //表格数据
+  const [caseSum, setCaseSum] = useState(1); //订单总数
+  const [tableSpinning, setTableSpinning] = useState(false);
+  const onFinish = (values) => {
+    if (!values.pageNum) {
+      values.pageNum = 1;
+      setCurrentPage(1);
+    }
+    console.log('Success:', values);
+    setTableSpinning(true);
+    getUserCreditList(values)
+      .then((res) => {
+        console.log(res.data);
+        setTableData(res.data.caseData);
+        setCaseSum(res.data.sum);
+        setTableSpinning(false);
+      })
+      .catch((err) => {
+        message.error(err.message);
+      });
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+  //拿取用户列表数据
+  useEffect(() => {
+    onFinish({
+      pageNum: 1,
+      userId: undefined,
+      caseId: undefined,
+      creditLess: 20,
+    });
+  }, []);
   return (
     <MainContainer>
       <Form form={form} onFinish={onFinish} onFinishFailed={onFinishFailed}>
@@ -108,7 +137,7 @@ function Credit() {
           </Col>
           <Col span={7}>
             <Form.Item label="违规行为" name="creditLess">
-              <Select placeholder="请选择违规行为">
+              <Select placeholder="请选择违规行为" defaultValue={20}>
                 {
                   //违规的行为，所以不存在0
                   creditLess
@@ -133,7 +162,23 @@ function Credit() {
           </Col>
         </Row>
       </Form>
-      <Table columns={columns} dataSource={data} />
+      <Spin tip="加载中..." spinning={tableSpinning}>
+        <Table
+          columns={columns}
+          dataSource={tableData}
+          bordered
+          pagination={{
+            total: caseSum,
+            current: currentPage,
+            onChange: (pageNum, pageSize) => {
+              console.log(pageNum);
+              setCurrentPage(pageNum);
+              //分页
+              onFinish({ ...form.getFieldValue(), pageNum: pageNum });
+            },
+          }}
+        />
+      </Spin>
     </MainContainer>
   );
 }

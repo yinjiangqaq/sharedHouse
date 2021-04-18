@@ -1,4 +1,4 @@
-import { act } from 'react-dom/test-utils';
+//import { act } from 'react-dom/test-utils';
 
 export default function reducer(state, action) {
   switch (action.type) {
