@@ -61,3 +61,14 @@ export const creditLess = [
     value: 0,
   },
 ];
+//用户角色
+export const role = [
+  {
+    label: '普通用户',
+    value: 1,
+  },
+  {
+    label: '房东',
+    value: 2,
+  },
+];

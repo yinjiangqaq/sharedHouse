@@ -12,32 +12,44 @@ import {
   Spin,
 } from 'antd';
 import { getUserList } from '../../api/user/index';
+import { role } from '../../common/constant';
 
 function Account() {
   const [currentPage, setCurrentPage] = useState(1);
   const columns = [
     {
       title: '用户名',
+      align: 'center',
       dataIndex: 'userName',
       key: 'userName',
     },
     {
       title: '用户ID',
+      align: 'center',
       dataIndex: 'userId',
       key: 'userId',
     },
     {
       title: '用户邮箱',
+      align: 'center',
       dataIndex: 'email',
       key: 'email',
     },
     {
       title: '用户角色',
+      align: 'center',
       dataIndex: 'role',
       key: 'role',
+      render: (text, record) => {
+        {
+          let temp = role.filter((item) => item.value === record.role);
+          return temp.length > 0 ? temp[0].label : '暂无身份';
+        }
+      },
     },
     {
       title: '用户信用',
+      align: 'center',
       dataIndex: 'credit',
       key: 'credit',
     },
@@ -47,18 +59,21 @@ function Account() {
       key: '1',
       name: 'John Brown',
       age: 32,
+      role: 1,
       address: 'New York No. 1 Lake Park',
     },
     {
       key: '2',
       name: 'Jim Green',
       age: 42,
+      role: 1,
       address: 'London No. 1 Lake Park',
     },
     {
       key: '3',
       name: 'Joe Black',
       age: 32,
+      role: 1,
       address: 'Sidney No. 1 Lake Park',
     },
   ];

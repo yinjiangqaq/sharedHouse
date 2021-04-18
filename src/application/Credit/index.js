@@ -24,21 +24,25 @@ function Credit() {
   const columns = [
     {
       title: '用户名',
+      align: 'center',
       dataIndex: 'userName',
       key: 'userName',
     },
     {
       title: '用户ID',
+      align: 'center',
       dataIndex: 'userId',
       key: 'userId',
     },
     {
       title: '订单ID',
+      align: 'center',
       dataIndex: 'caseId',
       key: 'caseId',
     },
     {
       title: '违规行为',
+      align: 'center',
       dataIndex: 'creditLess',
       key: 'creditLess',
       render: (text, record) => {

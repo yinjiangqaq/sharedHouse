@@ -33,21 +33,25 @@ function Room() {
   const columns = [
     {
       title: '订单ID',
+      align: 'center',
       dataIndex: 'caseId',
       key: 'caseId',
     },
     {
       title: '公寓名称',
+      align: 'center',
       dataIndex: 'name',
       key: 'name',
     },
     {
       title: '顾客名称',
+      align: 'center',
       dataIndex: 'customer',
       key: 'customer',
     },
     {
       title: '订单时间',
+      align: 'center',
       dataIndex: 'time',
       key: 'time',
       render: (text, record) => {
@@ -227,7 +231,7 @@ function Room() {
               <Input placeholder="请输入订单id"></Input>
             </Form.Item>
           </Col>
-          <Col span={5}>
+          <Col span={6}>
             <Form.Item label="公寓名称" name="name">
               <Input placeholder="请输入公寓名称"></Input>
             </Form.Item>

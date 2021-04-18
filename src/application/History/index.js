@@ -60,21 +60,25 @@ function History() {
     {
       title: '订单ID',
       dataIndex: 'caseId',
+      align: 'center',
       key: 'caseId',
     },
     {
       title: '订单名称',
       dataIndex: 'caseName',
+      align: 'center',
       key: 'caseName',
     },
     {
       title: '顾客名称',
       dataIndex: 'customer',
+      align: 'center',
       key: 'customer',
     },
     {
       title: '订单时间',
       dataIndex: 'time',
+      align: 'center',
       key: 'time',
       render: (text, record) => {
         return <Space size="middle">{timestampToTime(record.time)}</Space>;
@@ -83,10 +87,20 @@ function History() {
     {
       title: '订单状态',
       dataIndex: 'state',
+      align: 'center',
       key: 'state',
       render: (text, record) => {
         return (
-          <Space size="middle">
+          <Space
+            size="middle"
+            style={{
+              height: '27px',
+              color: '#fff ',
+              background: `${record.state === 1 ? '#52c41a' : '#ff4d4f'}`,
+              borderRadius: '2px',
+              padding: '4px 13px',
+            }}
+          >
             {STATE.find((item) => item.value === record.state).label}
           </Space>
         );
@@ -95,6 +109,7 @@ function History() {
     {
       title: '订单操作',
       key: 'action',
+      align: 'center',
       render: (text, record) => (
         <Space size="middle">
           <a onClick={() => showDetailModal(record)}>详情</a>
@@ -177,9 +192,7 @@ function History() {
         <Row gutter={24}>
           <Col span={6}>
             <Form.Item label="日期" name="time">
-              <RangePicker
-                format={dateFormat}
-              />
+              <RangePicker format={dateFormat} />
             </Form.Item>
           </Col>
           <Col span={6} offset={1}>
