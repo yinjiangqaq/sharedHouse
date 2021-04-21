@@ -14,7 +14,7 @@ function Project(props) {
     if (window.location.hash.slice(1) === '/') {
       //默认跳账号管理
       window.location.hash = '#/project/account';
-      window.location.reload()
+      window.location.reload();
       return [];
     } else {
       if (
@@ -115,7 +115,7 @@ function Project(props) {
       <BaseHeader></BaseHeader>
       <Layout>
         <BaseSider menu={MENU} currKeys={GetCurrKeys()}></BaseSider>
-        <Content
+        <Layout
           style={{
             margin: '20px',
             backgroundColor: '#fff',
@@ -129,9 +129,13 @@ function Project(props) {
               })}
             </Breadcrumb>
           </BreadcrumbContainer>
-          {/* 渲染与当前路径匹配的路由组件 */}
-          {renderRoutes(route.children)}
-        </Content>
+          <Content
+            style={{ overflow: 'auto', height: `${window.innerHeight - 50}px` }}
+          >
+            {/* 渲染与当前路径匹配的路由组件 */}
+            {renderRoutes(route.children)}
+          </Content>
+        </Layout>
       </Layout>
     </Layout>
   );
