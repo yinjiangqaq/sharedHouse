@@ -38,23 +38,6 @@ function History() {
   //   setIsCaseModalVisible(modalState.CHANGE);
   // };
   //取消
-  const handleCancel = () => {
-    setIsCaseModalVisible(modalState.INITIAL);
-  };
-  const handleOk = () => {
-    console.log(isCaseModalVisible); //判单当前的状态
-    console.log('父组件的formData', caseFormData);
-    deduceCredit(caseFormData)
-      .then((res) => {
-        if (res.status === 200) {
-          message.info('扣除信用分成功');
-        }
-      })
-      .catch((err) => {
-        message.error('扣除信用分失败');
-      });
-    setIsCaseModalVisible(modalState.INITIAL);
-  };
 
   const columns = [
     {
@@ -148,6 +131,9 @@ function History() {
       values.pageNum = 1;
       setCurrentPage(1);
     }
+    if (!values.state) {
+      values.state = 1;
+    }
     //将moment转换为s的时间戳,但是不能直接改到rangePicker选中的两个moment对象的引用
     //需要重新复制一个对象
     let inputValues = { ...values };
@@ -185,6 +171,25 @@ function History() {
     });
   }, []);
   const [form] = Form.useForm();
+  const handleCancel = () => {
+    setIsCaseModalVisible(modalState.INITIAL);
+  };
+  const handleOk = () => {
+    console.log(isCaseModalVisible); //判单当前的状态
+    console.log('父组件的formData', caseFormData);
+    deduceCredit(caseFormData)
+      .then((res) => {
+        if (res.status === 200) {
+          message.info('扣除信用分成功');
+          onFinish(form.getFieldValue());
+        }
+      })
+      .catch((err) => {
+        message.error('扣除信用分失败');
+      });
+    setIsCaseModalVisible(modalState.INITIAL);
+  };
+
   const dateFormat = 'YYYY/MM/DD'; //日期格式
   return (
     <MainContainer>

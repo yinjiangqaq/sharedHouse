@@ -35,7 +35,7 @@ axiosInstance.interceptors.response.use(
       window.location.reload();
     } else if (res.code === -1) {
       //如果请求失败，显示错误信息
-      message.error(res.msg);
+      message.error(res.msg||res.data.message);
     }
     return res;
   },
