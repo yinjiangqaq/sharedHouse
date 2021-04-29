@@ -1,4 +1,4 @@
-import axiosInstance from '../config';
+import { axiosInstance } from '../config';
 
 //新增公寓配置
 export const addRoom = (params) => {

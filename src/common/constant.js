@@ -1,15 +1,28 @@
 export const setType = [
   {
+    value: 0,
+    label: '按时',
+    label2: '',
+  },
+  {
     value: 1,
-    label: '每次',
+    label: '月卡',
+    label2: '每月',
   },
   {
     value: 2,
-    label: '每月',
+    label: '季卡',
+    label2: '每季',
   },
   {
     value: 3,
-    label: '每年',
+    label: '年卡',
+    label2: '每年',
+  },
+  {
+    value: 4,
+    label: '按次',
+    label2: '每次',
   },
 ]; //公共资源套餐类型
 

@@ -1,4 +1,4 @@
-import axiosInstance from '../config';
+import { axiosInstance } from '../config';
 
 //登录
 export const login = (parms) => {
@@ -27,4 +27,3 @@ export const getEmailVerifyCode = (params) => {
 export const getUserInfo = (params) => {
   return axiosInstance.get('/api/getUserInfo', {}, {});
 };
-

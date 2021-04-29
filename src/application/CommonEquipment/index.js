@@ -32,17 +32,18 @@ function CommonEquipment() {
       dataIndex: 'device',
       key: 'device',
     },
+    // {
+    //   title: '价格/RMB',
+    //   dataIndex: 'price',
+    //   key: 'price',
+    // },
     {
-      title: '价格/RMB',
-      dataIndex: 'price',
-      key: 'price',
-    },
-    {
-      title: '套餐形式',
+      title: '收费形式',
       dataIndex: 'setType',
       key: 'setType',
       render: (text, record) => {
-        return setType.filter((item) => item.value === record.setType)[0].label;
+        let temp = setType.filter((item) => item.value === record.setType)[0];
+        return temp ? temp.label : '';
       },
     },
     {
@@ -150,6 +151,12 @@ function CommonEquipment() {
       .then((res) => {
         if (res.status === 200) {
           console.log(res.data);
+          res.data.map((item) =>
+            item.PriceList.map((item1) => {
+              item1.time[0] = moment(item1.time[0], 'HH'); //转化为moment
+              item1.time[1] = moment(item1.time[1], 'HH');
+            })
+          );
           setTableData(res.data);
           setTableSpinning(false);
         }
@@ -176,16 +183,30 @@ function CommonEquipment() {
   };
   //新增公寓配置
   const handleOk = () => {
-    console.log(isModalVisible); //判单当前的状态
+    //console.log(isModalVisible); //判单当前的状态
     console.log('父组件的formData', formData);
+    let tempFormData = { ...formData };
+    //不要改到原来对象的引用
+    if (formData && formData.PriceList && formData.PriceList.length > 0) {
+      tempFormData.PriceList = formData.PriceList.map((item) => {
+        return {
+          time:
+            item.time && item.time.length > 0
+              ? [item.time[0].hour(), item.time[1].hour()]
+              : [],
+          price: item.price,
+        };
+      });
+    }
     //新增
     if (isModalVisible === 1) {
-      addDevice(formData)
+      addDevice(tempFormData)
         .then((res) => {
           if (res.status === 200) {
             message.info('新增成功');
             //查找当前查询表单对应的数据
             onFinish(form.getFieldValue());
+            setIsModalVisible(modalState.INITIAL); //只有更改成功和新增成功才会关闭对话框，优化用户体验
           }
         })
         .catch((err) => {
@@ -193,19 +214,19 @@ function CommonEquipment() {
         });
     } else if (isModalVisible === 2) {
       //更改配置
-      changeDevice(formData)
+      changeDevice(tempFormData)
         .then((res) => {
           if (res.status === 200) {
             message.info('更改成功');
             console.log(form);
             onFinish(form.getFieldValue());
+            setIsModalVisible(modalState.INITIAL);
           }
         })
         .catch((err) => {
           message.error(err.message);
         });
     }
-    setIsModalVisible(modalState.INITIAL);
   };
   //取消
   const handleCancel = () => {

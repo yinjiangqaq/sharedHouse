@@ -3,6 +3,7 @@ import { MainContainer } from './style';
 import moment, { months } from 'moment';
 import EquipmentForm from '../../components/equipmentForm';
 import { modalState } from '../../common/constant';
+import { timestampToMoment } from '../../common/util';
 import {
   addRoom,
   changeRoom,
@@ -25,7 +26,6 @@ import {
 
 function Equipment() {
   //负责当前需要处理的订单，所以没有订单状态的选择下拉框
-  let now = moment();
   const columns = [
     {
       title: '公寓名称',
@@ -33,7 +33,7 @@ function Equipment() {
       key: 'name',
     },
     {
-      title: '价格',
+      title: '默认价格',
       dataIndex: 'price',
       key: 'price',
     },
@@ -46,6 +46,11 @@ function Equipment() {
       title: '联系方式',
       dataIndex: 'contact',
       key: 'contact',
+    },
+    {
+      title: '公寓户型',
+      dataIndex: 'roomType',
+      key: 'roomType',
     },
     {
       title: '公寓地址',
@@ -132,6 +137,13 @@ function Equipment() {
       .then((res) => {
         if (res.status === 200) {
           console.log(res.data);
+          //需要对后端传过来的时间戳做处理,处理成moment
+          res.data.map((item) =>
+            item.PriceList.map((item1) => {
+              item1.time[0] = moment(timestampToMoment(item1.time[0]));
+              item1.time[1] = moment(timestampToMoment(item1.time[1]));
+            })
+          );
           setTableData(res.data);
           setTableSpinning(false);
           //   tableData = res.data;
@@ -169,6 +181,7 @@ function Equipment() {
           if (res.status === 200) {
             message.info('新增成功');
             onFinish(form.getFieldValue());
+            setIsModalVisible(modalState.INITIAL); //只有新增或者更改成功，才会把对话框关闭，如果报错，不关闭对话框，优化用户体验
           }
         })
         .catch((err) => {
@@ -176,19 +189,32 @@ function Equipment() {
         });
     } else if (isModalVisible === 2) {
       //更改配置
-      changeRoom(formData)
+      let tempFormData = { ...formData };
+      //不要改到原来对象的引用
+      if (formData.PriceList && formData.PriceList.length > 0) {
+        tempFormData.PriceList = formData.PriceList.map((item) => {
+          return {
+            time: [
+              parseInt(+item.time[0] / 1000),
+              parseInt(+item.time[1] / 1000),
+            ],
+            price: item.price,
+          };
+        });
+      }
+
+      changeRoom(tempFormData)
         .then((res) => {
           if (res.status === 200) {
             message.info('更改成功');
             onFinish(form.getFieldValue());
+            setIsModalVisible(modalState.INITIAL);
           }
         })
         .catch((err) => {
           message.error(err.message);
         });
     }
-
-    setIsModalVisible(modalState.INITIAL);
   };
   //取消
   const handleCancel = () => {

@@ -1,4 +1,4 @@
-import axiosInstance from '../config';
+import { axiosInstance } from '../config';
 
 //新增公共设施配置
 

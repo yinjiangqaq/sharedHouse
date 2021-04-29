@@ -1,4 +1,4 @@
-import axiosInstance from '../config';
+import { axiosInstance } from '../config';
 
 //查找历史订单
 export const findCase = (params) => {

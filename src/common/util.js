@@ -14,7 +14,7 @@ export const timestampToTime = (timestamp) => {
   return `${Y}-${M}-${D} ${h}:${m}:${s}`;
 };
 
-export const timestampToMoment = (timestamp, left) => {
+export const timestampToMoment = (timestamp, left = false) => {
   var date = new Date(timestamp * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
   var Y = date.getFullYear();
   var M =

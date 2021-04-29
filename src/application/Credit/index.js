@@ -20,7 +20,10 @@ const { Option } = Select;
 
 function Credit() {
   //负责当前需要处理的订单，所以没有订单状态的选择下拉框
-  let now = moment();
+  //展示图片
+  const showPicture = (file) => {
+    window.open(file, '_blank');
+  };
   const columns = [
     {
       title: '用户名',
@@ -52,6 +55,17 @@ function Credit() {
           (item) => item.value === record.creditLess
         );
         return temp.length > 0 ? temp[0].label : '';
+      },
+    },
+    {
+      title: '违规图片',
+      align: 'center',
+      dataIndex: 'file',
+      key: 'file',
+      render: (text, record) => {
+        return (
+          <Button onClick={() => showPicture(record.file)}>点击查看原图</Button>
+        );
       },
     },
     // {
