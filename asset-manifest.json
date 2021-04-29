@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/sharedHouse/static/css/main.ce52564e.chunk.css",
+    "main.js": "/sharedHouse/static/js/main.dbfe487d.chunk.js",
+    "main.js.map": "/sharedHouse/static/js/main.dbfe487d.chunk.js.map",
+    "runtime-main.js": "/sharedHouse/static/js/runtime-main.983de057.js",
+    "runtime-main.js.map": "/sharedHouse/static/js/runtime-main.983de057.js.map",
+    "static/css/2.b72b1a0e.chunk.css": "/sharedHouse/static/css/2.b72b1a0e.chunk.css",
+    "static/js/2.4e7adb0a.chunk.js": "/sharedHouse/static/js/2.4e7adb0a.chunk.js",
+    "static/js/2.4e7adb0a.chunk.js.map": "/sharedHouse/static/js/2.4e7adb0a.chunk.js.map",
+    "index.html": "/sharedHouse/index.html",
+    "static/css/2.b72b1a0e.chunk.css.map": "/sharedHouse/static/css/2.b72b1a0e.chunk.css.map",
+    "static/css/main.ce52564e.chunk.css.map": "/sharedHouse/static/css/main.ce52564e.chunk.css.map",
+    "static/js/2.4e7adb0a.chunk.js.LICENSE.txt": "/sharedHouse/static/js/2.4e7adb0a.chunk.js.LICENSE.txt",
+    "static/media/404.4cf6930d.png": "/sharedHouse/static/media/404.4cf6930d.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.983de057.js",
+    "static/css/2.b72b1a0e.chunk.css",
+    "static/js/2.4e7adb0a.chunk.js",
+    "static/css/main.ce52564e.chunk.css",
+    "static/js/main.dbfe487d.chunk.js"
+  ]
+}

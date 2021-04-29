@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/App.css"],"names":[],"mappings":"AAEA,MACI,WACJ","file":"main.ce52564e.chunk.css","sourcesContent":["@import '~antd/dist/antd.css';\r\n\r\n#root{\r\n    height: 100%;\r\n}"]}
